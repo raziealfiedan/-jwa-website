@@ -4,6 +4,7 @@ document.documentElement.classList.add('js');
 const ICON = {
   arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>',
   left: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6"/></svg>',
+  up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20V5M6 11l6-6 6 6"/></svg>',
   down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"/></svg>',
   close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>',
   pause: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>',
@@ -91,7 +92,7 @@ function renderFooter() {
             <li>Lot No. 1, 2nd Floor, YLY Plaza,<br>Jalan Tuaran Bypass, Inanam,<br>88450 Kota Kinabalu, Sabah</li>
             <li><a href="tel:+6088335618">+6088 335 618</a> (office)<br><a href="tel:+60128802432">+6012 880 2432</a> (mobile)</li>
             <li><a href="mailto:inquiries@jwadesignbuild.com">inquiries@jwadesignbuild.com</a></li>
-            <li>Mon to Fri, 8.30am to 5.30pm</li>
+            <li>Mon to Fri, 8am to 5pm</li>
           </ul>
         </div>
       </div>
@@ -101,7 +102,8 @@ function renderFooter() {
       </div>
     </div>
   </footer>
-  <a class="wa" href="https://wa.me/60128802432?text=Hi%20JWA%2C%20I'd%20like%20to%20discuss%20a%20project." aria-label="WhatsApp JWA">${ICON.wa}</a>`;
+  <a class="wa" href="https://wa.me/60128802432?text=Hi%20JWA%2C%20I'd%20like%20to%20discuss%20a%20project." aria-label="WhatsApp JWA">${ICON.wa}</a>
+  <button type="button" class="to-top" aria-label="Back to top" tabindex="-1">${ICON.up}</button>`;
 }
 
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -175,6 +177,31 @@ function initHeaderScroll() {
     ticking = false;
   };
   addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+}
+
+/* Back-to-top button, shown once the visitor is a screen down a long page */
+function initToTop() {
+  const b = document.querySelector('.to-top');
+  if (!b) return;
+  let ticking = false;
+  const update = () => {
+    const long = document.documentElement.scrollHeight > innerHeight * 2;
+    const on = long && scrollY > innerHeight * 0.9;
+    b.classList.toggle('show', on);
+    b.tabIndex = on ? 0 : -1;
+    ticking = false;
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  addEventListener('resize', update);
+  b.addEventListener('click', () => {
+    scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
+    // The header grows back near the top, which can leave the page a few pixels short; finish the job
+    const settle = () => { const fix = () => { if (scrollY > 0 && scrollY < 80) scrollTo({ top: 0, behavior: 'instant' }); }; fix(); setTimeout(fix, 500); };
+    if ('onscrollend' in window) addEventListener('scrollend', settle, { once: true }); else setTimeout(settle, 900);
+    const target = document.querySelector('.header a');
+    target?.focus({ preventScroll: true });
+  });
   update();
 }
 
@@ -459,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCopy();
   initReveal();
   initCountUp();
-  initHeaderScroll();
+  initHeaderScroll(); initToTop();
   initParallax();
   initPageTransitions();
   document.querySelectorAll('[data-icon]').forEach(el => {

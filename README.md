@@ -27,6 +27,7 @@ Static HTML/CSS/JS. Open `index.html` in a browser with an internet connection. 
   - Button fills sweep in on the slant. The services list cycles on its own.
   - The project strip can be dragged. The hero video has a progress line.
   - Pages fade between each other.
+  - A back-to-top button appears above the WhatsApp button once the visitor scrolls a screen down a long page.
   - Everything turns off when the visitor has reduced motion enabled.
 - Each fact appears once on the site. Company Profile is in the header (and in the mobile menu). Contact details and credentials are in the footer.
 - Header and footer are injected by `assets/js/main.js`, so edit them in one place
@@ -36,7 +37,7 @@ Static HTML/CSS/JS. Open `index.html` in a browser with an internet connection. 
 2. **Remote assets.** Most project photos, award images, team photos and the hero video still load from the staging site's storage (Vercel Blob, Convex and `jwa.sampletest.website/images/...`). Before launch, download them, resize them to about 1600 px, save them into `assets/img/`, and update the URLs. Photos taken from the company profile are already local in `assets/img/projects/`. The hero video is `/images/hero/0112.mp4`.
 3. **To confirm with JWA:**
    - Figures: RM200M+ completed, RM300M capacity, RM50M revenue, RM20M financing line, 800+ jobs, 90% local.
-   - Office hours (Mon–Fri, 8.30am–5.30pm) and the careers email (`hr@jwadesignbuild.com`).
+   - The careers email (`hr@jwadesignbuild.com`). Office hours are confirmed as Mon–Fri, 8am–5pm.
 4. **Project TBCs.** Year or value is missing for SESB Keningau, the two JKR projects, KK Hyatt, Forest Solution, JWA HQ, Toyota, Ranau One and K Avenue, and the client for ibis Styles and Kundasang. Fill these in `assets/js/data.js`.
 5. **F&B projects.** Dragon Palace, Brown Fox Cafe and Kudat Golf & Marina Resort appear under the Restaurants & Cafes filter, before Residential.
 6. **Clients.** These are shown as names in the profile's order. Colour logo files from JWA can replace them later.

@@ -1026,3 +1026,29 @@ blockquote.pull cite { display: block; margin-top: 12px; font-style: normal; fon
 .legal a { text-decoration: underline; text-underline-offset: 3px; }
 .awards--certs { margin-top: 0; grid-template-columns: repeat(4, 1fr); }
 @media (max-width: 900px) { .awards--certs { grid-template-columns: repeat(2, 1fr); } }
+
+/* Back to top: stacked above the WhatsApp button, slides in after one screen */
+.to-top {
+  position: fixed; right: 20px; bottom: calc(20px + 56px + 8px + env(safe-area-inset-bottom, 0px)); z-index: 60;
+  width: 56px; height: 56px; display: grid; place-items: center; overflow: hidden;
+  background: var(--panel-glass); color: var(--ink); border: 1px solid var(--line);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); cursor: pointer;
+  opacity: 0; visibility: hidden; transform: translateY(12px);
+  transition: opacity .3s var(--ease), transform .35s var(--ease), visibility 0s linear .35s, color .25s, border-color .25s;
+}
+.to-top::before {
+  content: ""; position: absolute; inset: 0 -40%; background: var(--red);
+  transform: skewX(calc(var(--slant) * -1)) translateX(-130%); transition: transform .4s var(--ease);
+}
+.to-top svg { position: relative; width: 22px; height: 22px; }
+.to-top.show { opacity: 1; visibility: visible; transform: none; transition: opacity .3s var(--ease), transform .35s var(--ease), visibility 0s, color .25s, border-color .25s; }
+.to-top:hover, .to-top:focus-visible { color: var(--white); border-color: var(--red); }
+.to-top:hover::before, .to-top:focus-visible::before { transform: skewX(calc(var(--slant) * -1)) translateX(0); }
+.to-top:hover svg { animation: nudgeUp .5s var(--ease); }
+.to-top:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+@keyframes nudgeUp { 40% { transform: translateY(-4px); } }
+.menu-open .to-top, .menu-open .wa { opacity: 0; visibility: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  .to-top, .to-top.show, .to-top::before { transition: none; }
+  .to-top:hover svg { animation: none; }
+}
