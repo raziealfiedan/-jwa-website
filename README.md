@@ -3,7 +3,7 @@
 Static HTML/CSS/JS. Open `index.html` in a browser with an internet connection. Photos and the hero video still load from the staging site.
 
 ## Pages
-- `index.html` Home (follows JWA's October 2026 mockup): hero video, dark key-figures band, About with the site team photo, four Featured Projects cards (black and white, colour on hover or first tap), Proudly Sabahan with the corporate team photo, services, Our Clients & Partners logo wall (grey tiles that turn red on hover) with quote cards, credentials, call to action. Photos and logos taken from the mockup are in `assets/img/home/` and `assets/img/clients/`
+- `index.html` Home (follows JWA's October 2026 mockup): hero video, dark key-figures band, About with the site team photo, four Featured Projects cards (black and white, colour on hover or first tap), Proudly Sabahan with the corporate team photo, services, Our Clients & Partners logo wall (grey tiles that turn red on hover) with quote cards, credentials, call to action. Photos and logos taken from the mockup are in `assets/img/home/` and `assets/img/clients/`. The SESB card photo (`edited-photo-6.jpg`) still loads from the staging site's storage
 - `about.html` About Us: Leadership, Key Senior Management, Awards & Recognition (plus media features), Our Story and milestones (to 2026), Vision / Mission / Values, Sustainability & Community
 - `services.html` Our Business: capacity figures, what we offer, why JWA, 6-stage process, and JWA Group (nine businesses, photos in `assets/img/group/`)
 - `projects.html` Projects: 28 projects with year and contract value from the Sept 2026 company profile, Ongoing and Flagship tags, sector and location filters, and a gallery. Data is in `assets/js/data.js`
@@ -17,7 +17,7 @@ Static HTML/CSS/JS. Open `index.html` in a browser with an internet connection. 
 - Logo: `assets/img/jwa-logo.png` is the full lockup (mark plus JWA DESIGN & BUILD, SDN BHD) for light backgrounds, taken from the revision deck. The favicon is `assets/img/favicon.png`. Replace both with the master files from the brand pack if you have them.
 - Fonts: Satoshi for headings (Fontshare), Geist for body text (Google Fonts)
 - Colours: white `#ffffff`, paper grey `#f4f4f2`, ink `#151515`, red `#c8102e` to `#7d0a1b`
-- Backgrounds: JWA asked to remove the drafting grid and the diagonal line pattern (Oct 2026). Grey bands and the footer now use a soft light-grey gradient. The key figures and Proudly Sabahan bands are dark charcoal, with gold (`--gold`) for the figures and the Our Vision link, as in JWA's mockup.
+- Backgrounds: JWA asked to remove the drafting grid and the diagonal line pattern (Oct 2026). Grey bands and the footer now use a soft light-grey gradient. The diagonal lines stay on the homepage Services section only (`.section--hatch`). The key figures and Proudly Sabahan bands are dark charcoal, with gold (`--gold`) for the figures and the Our Vision link, as in JWA's mockup.
 - One slant for every diagonal: `--slant: 20deg` (and `--tan`) in `style.css`. White angled panels, red corners, the On-going badges and button sweeps all follow it. Red corners are sized by height, and their width follows the slant automatically.
 - Sharp corners everywhere. There is no dark mode.
 - Motion (in `main.js` and at the end of `style.css`):
@@ -27,7 +27,7 @@ Static HTML/CSS/JS. Open `index.html` in a browser with an internet connection. 
   - Button fills sweep in on the slant. The services list cycles on its own.
   - The project strip can be dragged. The hero video has a progress line.
   - Pages fade between each other.
-  - A back-to-top button appears above the WhatsApp button once the visitor scrolls a screen down a long page.
+  - A back-to-top button appears above the WhatsApp button once the visitor scrolls a screen down a long page. The WhatsApp button stays hidden while the top photo or video is on screen.
   - Everything turns off when the visitor has reduced motion enabled.
 - Each fact appears once on the site. Company Profile is in the header (and in the mobile menu). Contact details and credentials are in the footer.
 - Header and footer are injected by `assets/js/main.js`, so edit them in one place

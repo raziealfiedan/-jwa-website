@@ -185,11 +185,15 @@ function initHeaderScroll() {
 function initToTop() {
   const b = document.querySelector('.to-top');
   if (!b) return;
+  const wa = document.querySelector('.wa');
+  const hero = document.querySelector('main > .hero, main > .page-hero');
   let ticking = false;
   const update = () => {
     const long = document.documentElement.scrollHeight > innerHeight * 2;
     const on = long && scrollY > innerHeight * 0.9;
     b.classList.toggle('show', on);
+    // WhatsApp stays out of the hero's bottom-right corner, then appears once the visitor scrolls past it
+    if (wa) wa.classList.toggle('is-hidden', !!hero && scrollY < hero.offsetHeight * 0.6);
     b.tabIndex = on ? 0 : -1;
     ticking = false;
   };
