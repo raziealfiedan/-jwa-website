@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap">
   <link rel="icon" href="assets/img/favicon.png">
-  <link rel="stylesheet" href="assets/css/style.css?v=11">
+  <link rel="stylesheet" href="assets/css/style.css?v=12">
 </head>
 <body data-page="index">
   <div data-header></div>
@@ -55,67 +55,90 @@
     </section>
 
     <!-- 2 · KEY FIGURES -->
-    <section class="figures" aria-label="Key figures">
+    <section class="figures figures--dark" aria-label="Key figures">
       <div class="wrap">
-        <div class="figure reveal"><b>16</b><span>Years designing and building</span></div>
-        <div class="figure reveal"><b><em>RM200M+</em></b><span>Construction value completed</span></div>
-        <div class="figure reveal"><b>G7</b><span>Highest CIDB grade</span></div>
-        <div class="figure reveal"><b>Zero</b><span>Abandoned projects</span></div>
+        <div class="figure reveal"><b>16</b><span>Years Designing &amp; Building</span></div>
+        <div class="figure reveal"><b><small class="pre">RM</small><em>200</em><small class="post">mil+</small></b><span>Construction Value Completed</span></div>
+        <div class="figure reveal"><b>G7</b><span>Highest CIDB Grade</span></div>
+        <div class="figure reveal"><b>0</b><span>Abandoned Projects</span></div>
       </div>
     </section>
 
     <!-- 3 · ABOUT INTRO -->
-    <section class="section">
+    <section class="section section--grad about-intro">
       <div class="wrap split">
         <div class="copy reveal">
           <span class="eyebrow">About JWA</span>
-          <h2 class="h2">One accountable team, from first sketch to final handover.</h2>
-          <p class="lead">Architects, designers, quantity surveyors and builders under one roof since 2010.</p>
+          <h2 class="h2"><span class="nowrap">One accountable team,</span> from first sketch to final handover.</h2>
+          <p class="lead">Architects, designers, quantity surveyors <br class="br-d">and builders under one roof since 2010.</p>
           <div><a class="link-arrow" href="about.html">More about JWA <span data-icon="arrow"></span></a></div>
         </div>
-        <div class="frame reveal" style="aspect-ratio:6/5">
-          <img src="https://ljlmhlwco3ezbrys.public.blob.vercel-storage.com/projects/offices/jsk-group-far-east/_OSR0026-HDR-P8eHGZsXBIxrJyynv1VPLTFmG2qorn.jpg" alt="JSK Group corporate office interior designed and built by JWA" loading="lazy">
-          <div class="wedge wedge--tr" aria-hidden="true"></div>
-          <div class="frame-note"><b>Led by Datuk Ar. James Wong</b><span>Founding Director, LAM-registered architect</span></div>
+        <div class="frame frame--shadow reveal" style="aspect-ratio:3/2">
+          <img src="assets/img/home/team-site.jpg" alt="JWA project team on site with company trucks and excavator" loading="lazy">
         </div>
       </div>
     </section>
 
-    <!-- 5 · FEATURED PROJECT SPOTLIGHT -->
-    <section class="spotlight" aria-label="Featured project">
-      <img src="https://ljlmhlwco3ezbrys.public.blob.vercel-storage.com/projects/offices/sesb-kwsp-hq/edited-photo-12.jpg" alt="SESB KWSP Headquarters reception" loading="lazy">
-      <div class="wedge wedge--tr" aria-hidden="true"></div>
-      <div class="spot-card reveal">
-        <span class="eyebrow">Featured project</span>
-        <h2 class="h3" style="font-size:clamp(28px,2.6vw,40px)">SESB KWSP Headquarters</h2>
-        <dl class="facts">
-          <div><dt>Client</dt><dd>Sabah Electricity Sdn Bhd</dd></div>
-          <div><dt>Completed</dt><dd>2025</dd></div>
-          <div><dt>Contract value</dt><dd>RM41.8 million</dd></div>
-          <div><dt>Location</dt><dd>Kota Kinabalu</dd></div>
-        </dl>
-        <div class="btn-row"><a class="btn btn--red" href="projects.html">View all projects <span data-icon="arrow"></span></a></div>
+    <!-- 4 · FEATURED PROJECTS -->
+    <section class="section section--grad featured" aria-label="Featured projects">
+      <div class="wrap">
+        <div class="fp-head reveal">
+          <h2 class="h2">Featured Projects</h2>
+          <a class="link-arrow" href="projects.html">View All Projects <span data-icon="arrow"></span></a>
+        </div>
+      </div>
+      <div class="fp-strip" tabindex="0" aria-label="Featured projects, scroll sideways for more">
+          <a class="fcard reveal" href="projects.html">
+            <span class="fcard-media"><img src="assets/img/home/card-ibis.jpg" alt="ibis Styles Kota Kinabalu Inanam" loading="lazy"><i class="fcard-accent" aria-hidden="true"></i></span>
+            <span class="fcard-body">
+              <b>ibis Styles Hotel</b>
+              <span class="fcard-loc">Inanam, Kota Kinabalu</span>
+              <span class="fcard-client">Hotel design &amp; build</span>
+              <span class="fcard-meta">2018<i aria-hidden="true">|</i>RM3.17 million</span>
+            </span>
+          </a>
+          <a class="fcard reveal" href="projects.html">
+            <span class="fcard-media"><img src="assets/img/home/card-sesb-hq.jpg" alt="SESB KWSP Headquarters reception" loading="lazy"></span>
+            <span class="fcard-body">
+              <b>SESB KWSP Headquarters</b>
+              <span class="fcard-loc">Kota Kinabalu</span>
+              <span class="fcard-client">Sabah Electricity Sdn Bhd</span>
+              <span class="fcard-meta">2025<i aria-hidden="true">|</i>RM41.8 million</span>
+            </span>
+          </a>
+          <a class="fcard reveal" href="projects.html">
+            <span class="fcard-media"><img src="assets/img/home/card-conocophillips.jpg" alt="ConocoPhillips office reception" loading="lazy"><span class="fcard-badge">On-going</span></span>
+            <span class="fcard-body">
+              <b>ConocoPhillips Office</b>
+              <span class="fcard-loc">Sabah</span>
+              <span class="fcard-client">ConocoPhillips</span>
+              <span class="fcard-meta">2026<i aria-hidden="true">|</i>RM23 million</span>
+            </span>
+          </a>
+          <a class="fcard reveal" href="projects.html">
+            <span class="fcard-media"><img src="assets/img/home/card-sesb-warehouse.jpg" alt="Sabah Electricity warehouse, architectural render" loading="lazy"><span class="fcard-badge">On-going</span></span>
+            <span class="fcard-body">
+              <b>SESB Warehouse</b>
+              <span class="fcard-loc">Inanam, Kota Kinabalu</span>
+              <span class="fcard-client">Sabah Electricity Sdn Bhd</span>
+              <span class="fcard-meta">2025<i aria-hidden="true">|</i>RM31.88 million</span>
+            </span>
+          </a>
       </div>
     </section>
 
-    <!-- 7 · SABAH TALENT -->
-    <section class="section section--paper">
-      <div class="wrap split split--rev">
-        <div class="frame reveal" style="aspect-ratio:16/10">
-          <img src="https://jwa.sampletest.website/images/team/management-team.webp" alt="JWA Design & Build senior management team" loading="lazy">
-          <div class="wedge wedge--tr" aria-hidden="true"></div>
+    <!-- 5 · PROUDLY SABAHAN -->
+    <section class="sabahan" aria-label="Proudly Sabahan">
+      <div class="wrap sabahan-copy reveal">
+        <h2 class="h2">Proudly Sabahan</h2>
+        <p class="lead">Empowering and developing local talent, then trusting them <br class="br-d">with landmark projects across Malaysia.</p>
+        <div class="sabahan-stats">
+          <div><b>90%</b><span>Local Workforce</span></div>
+          <div><b>800+</b><span>Sabahan Jobs Supported</span></div>
         </div>
-        <div class="copy reveal">
-          <span class="eyebrow">Rooted in Sabah</span>
-          <h2 class="h2">Proudly Sabahan.</h2>
-          <p class="lead">Empowering and developing local talent, then trusting them with landmark projects across Malaysia.</p>
-          <div><a class="link-arrow" href="about.html#vision">Our vision <span data-icon="arrow"></span></a></div>
-          <div class="stats">
-            <div><b>90%</b><span>Local workforce</span></div>
-            <div><b>800+</b><span>Sabahan jobs supported</span></div>
-          </div>
-        </div>
+        <a class="link-arrow link-arrow--gold" href="about.html#vision">Our Vision <span data-icon="arrow"></span></a>
       </div>
+      <img class="sabahan-photo" src="assets/img/home/team-corporate.jpg" alt="The JWA Design &amp; Build team" loading="lazy">
     </section>
 
     <!-- 8 · SERVICES -->
@@ -148,46 +171,46 @@
     </section>
 
     <!-- 9 · CLIENTS + TESTIMONIALS -->
-    <section class="section section--paper">
+    <section class="section clientwall" aria-label="Our clients and partners">
+      <img class="ribbon ribbon--tr" src="assets/img/home/ribbon.png" alt="" aria-hidden="true" loading="lazy">
+      <img class="ribbon ribbon--bl" src="assets/img/home/ribbon.png" alt="" aria-hidden="true" loading="lazy">
       <div class="wrap">
-        <div class="section-head reveal">
-          <div>
-            <span class="eyebrow">Trusted by</span>
-            <h2 class="h2">GLCs, government and leading corporates.</h2>
-          </div>
+        <div class="clientwall-head reveal">
+          <span class="eyebrow">Trusted by GLCs, government and leading corporates</span>
+          <h2 class="h2">Our Clients &amp; Partners</h2>
         </div>
-        <ul class="clients reveal">
-          <li>Sabah Electricity</li>
-          <li>ConocoPhillips</li>
-          <li>Qhazanah Sabah Berhad</li>
-          <li>Suria Group</li>
-          <li>DBKK</li>
-          <li>UPKO</li>
-          <li>POIC</li>
-          <li>Sawit Kinabalu</li>
-          <li>JKR</li>
-          <li>VTS Group</li>
-          <li>JSK Group</li>
-          <li>WK Consortium</li>
-          <li>Upper Padas Power</li>
-          <li>ibis Styles Hotels</li>
-          <li>Proton</li>
-          <li>Jesselton International</li>
-          <li>Toyota</li>
-          <li>Sinaland</li>
-          <li>Elemen Utara KK</li>
-          <li>Tropicana Corporation</li>
-          <li>Kinabalu International School</li>
-          <li>MegaCity Avenue</li>
-          <li>Forest Solutions</li>
-          <li>Hyatt Regency</li>
+        <ul class="logos">
+          <li><span class="logo-tile"><img src="assets/img/clients/sabah-electricity.png" alt="Sabah Electricity logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Sabah Electricity</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/conocophillips.png" alt="ConocoPhillips logo" loading="lazy" width="240" height="240"></span><span class="logo-name">ConocoPhillips</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/qhazanah.png" alt="Qhazanah Sabah Berhad logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Qhazanah Sabah Berhad</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/suria-group.png" alt="Suria Group logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Suria Group</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/dbkk.png" alt="DBKK logo" loading="lazy" width="240" height="240"></span><span class="logo-name">DBKK</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/upko.png" alt="UPKO logo" loading="lazy" width="240" height="240"></span><span class="logo-name">UPKO</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/poic.png" alt="POIC logo" loading="lazy" width="240" height="240"></span><span class="logo-name">POIC</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/sawit-kinabalu.png" alt="Sawit Kinabalu logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Sawit Kinabalu</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/jkr.png" alt="JKR logo" loading="lazy" width="240" height="240"></span><span class="logo-name">JKR</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/vts-group.png" alt="VTS Group logo" loading="lazy" width="240" height="240"></span><span class="logo-name">VTS Group</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/jsk-group.png" alt="JSK Group logo" loading="lazy" width="240" height="240"></span><span class="logo-name">JSK Group</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/wk-consortium.png" alt="WK Consortium logo" loading="lazy" width="240" height="240"></span><span class="logo-name">WK Consortium</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/upper-padas-power.png" alt="Upper Padas Power logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Upper Padas Power</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/ibis-styles.png" alt="ibis Styles Hotels logo" loading="lazy" width="240" height="240"></span><span class="logo-name">ibis Styles Hotels</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/proton.png" alt="Proton logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Proton</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/jesselton-international.png" alt="Jesselton International logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Jesselton International</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/toyota.png" alt="Toyota logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Toyota</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/sinaland.png" alt="Sinaland logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Sinaland</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/elemen-utara-kk.png" alt="Elemen Utara KK logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Elemen Utara KK</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/tropicana.png" alt="Tropicana Corporation logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Tropicana Corporation</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/kinabalu-international-school.png" alt="Kinabalu International School logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Kinabalu International School</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/megacity-avenue.png" alt="MegaCity Avenue logo" loading="lazy" width="240" height="240"></span><span class="logo-name">MegaCity Avenue</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/forest-solutions.png" alt="Forest Solutions logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Forest Solutions</span></li>
+          <li><span class="logo-tile"><img src="assets/img/clients/hyatt-regency.png" alt="Hyatt Regency logo" loading="lazy" width="240" height="240"></span><span class="logo-name">Hyatt Regency</span></li>
         </ul>
-        <div class="quotes">
-          <figure class="quote reveal">
+        <div class="qcards">
+          <figure class="qcard reveal">
             <blockquote>Professionalism, commitment and attention to detail, from initial planning to the final touches.</blockquote>
             <figcaption><b>Suria Capital Holdings Berhad</b><span>New corporate office, JQ Central</span></figcaption>
           </figure>
-          <figure class="quote reveal">
+          <figure class="qcard reveal">
             <blockquote>A high level of professionalism, technical competency and commitment throughout the project.</blockquote>
             <figcaption><b>Sabah Electricity (SESB)</b><span>New headquarters, Kwasa Building</span></figcaption>
           </figure>
@@ -240,6 +263,6 @@
   </main>
 
   <div data-footer></div>
-  <script src="assets/js/main.js?v=11"></script>
+  <script src="assets/js/main.js?v=12"></script>
 </body>
 </html>
