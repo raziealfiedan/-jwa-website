@@ -5,6 +5,7 @@ const ICON = {
   arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>',
   left: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6"/></svg>',
   up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20V5M6 11l6-6 6 6"/></svg>',
+  dl: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5M4 14.5v3.2c0 1 .8 1.8 1.8 1.8h12.4c1 0 1.8-.8 1.8-1.8v-3.2"/></svg>',
   down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"/></svg>',
   close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>',
   pause: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>',
@@ -40,7 +41,7 @@ function renderHeader() {
         <a class="nav-profile" href="assets/JWA-Company-Profile.pdf" download="JWA-Design-and-Build-Company-Profile.pdf">Company Profile (PDF)</a>
       </nav>
       <div style="display:flex;gap:10px;align-items:center">
-        <a class="btn btn--ink" href="assets/JWA-Company-Profile.pdf" download="JWA-Design-and-Build-Company-Profile.pdf" title="Download company profile (PDF, 12.6 MB)">Company Profile ${ICON.down}</a>
+        <a class="btn-profile" href="assets/JWA-Company-Profile.pdf" download="JWA-Design-and-Build-Company-Profile.pdf" title="Download company profile (PDF, 12.6 MB)"><span class="bp-ico">${ICON.dl}</span><span class="bp-txt">Company Profile</span></a>
         <button class="menu-btn" aria-label="Open menu" aria-controls="nav" aria-expanded="false"><span></span></button>
       </div>
     </div>
@@ -110,7 +111,7 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* Scroll reveal. Siblings that reveal together are staggered; lists marked
    as .stagger bring their children in one after another. */
-const STAGGER = '.creds, .steps, .why, .perks, .figgrid, .stats, .names, .logos, .clients, .values, .chips, .svc-list, .group, .pillars, .award-line, .facts';
+const STAGGER = '.rcards, .creds, .steps, .why, .perks, .figgrid, .stats, .names, .logos, .clients, .values, .chips, .svc-list, .group, .pillars, .award-line, .facts';
 let revealIO;
 function initReveal() {
   document.querySelectorAll(STAGGER).forEach(el => el.classList.add('reveal', 'stagger'));
@@ -184,11 +185,15 @@ function initHeaderScroll() {
 function initToTop() {
   const b = document.querySelector('.to-top');
   if (!b) return;
+  const wa = document.querySelector('.wa');
+  const hero = document.querySelector('main > .hero, main > .page-hero');
   let ticking = false;
   const update = () => {
     const long = document.documentElement.scrollHeight > innerHeight * 2;
     const on = long && scrollY > innerHeight * 0.9;
     b.classList.toggle('show', on);
+    // WhatsApp stays out of the hero's bottom-right corner, then appears once the visitor scrolls past it
+    if (wa) wa.classList.toggle('is-hidden', !!hero && scrollY < hero.offsetHeight * 0.6);
     b.tabIndex = on ? 0 : -1;
     ticking = false;
   };
@@ -203,6 +208,27 @@ function initToTop() {
     target?.focus({ preventScroll: true });
   });
   update();
+}
+
+/* Featured project cards: photos show colour on hover; on touch, the first tap shows colour and the second opens */
+function initFeatured() {
+  const strip = document.querySelector('.fp-strip');
+  if (!strip) return;
+  const cards = [...strip.querySelectorAll('.fcard')];
+  cards.forEach(c => c.addEventListener('click', e => {
+    if (c.dataset.touch === '1' && !c.classList.contains('is-on')) {
+      e.preventDefault();
+      cards.forEach(o => o.classList.toggle('is-on', o === c));
+    }
+  }));
+  strip.addEventListener('pointerdown', e => { const c = e.target.closest('.fcard'); if (c) c.dataset.touch = e.pointerType === 'mouse' ? '0' : '1'; });
+  // Drag sideways with the mouse
+  let down = false, x0 = 0, l0 = 0, moved = false;
+  strip.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; moved = false; x0 = e.clientX; l0 = strip.scrollLeft; });
+  addEventListener('pointermove', e => { if (!down) return; const dx = e.clientX - x0; if (Math.abs(dx) > 4) { moved = true; strip.classList.add('dragging'); } strip.scrollLeft = l0 - dx; });
+  addEventListener('pointerup', () => { if (!down) return; down = false; setTimeout(() => strip.classList.remove('dragging'), 0); });
+  strip.addEventListener('click', e => { if (moved) { e.preventDefault(); moved = false; } }, true);
+  strip.addEventListener('dragstart', e => e.preventDefault());
 }
 
 /* Gentle parallax on full-bleed photography and the red corners */
@@ -246,6 +272,37 @@ function initPageTransitions() {
     setTimeout(() => { location.href = href; }, 260);
   });
   addEventListener('pageshow', e => { if (e.persisted) document.body.classList.remove('leaving'); });
+}
+
+/* Hero: the red box steps through JWA's flagship projects */
+function initFlagships() {
+  const box = document.querySelector('[data-flagships]');
+  if (!box) return;
+  const items = [
+    { name: 'SESB KWSP Headquarters', meta: 'Sabah Electricity · RM41.8 million' },
+    { name: 'SESB Warehouse, Inanam', meta: 'Sabah Electricity · RM31.88 million · On site' },
+    { name: 'ConocoPhillips Office', meta: 'ConocoPhillips · RM23 million · On site' },
+    { name: 'Qhazanah Sabah PPNS', meta: 'Qhazanah Sabah Berhad · RM6.2 million' }
+  ];
+  const $ = sel => box.querySelector(sel);
+  let i = 0, timer;
+  $('[data-fl-n]').textContent = String(items.length).padStart(2, '0');
+  const show = n => {
+    i = (n + items.length) % items.length;
+    box.classList.add('is-swapping');
+    setTimeout(() => {
+      $('[data-fl-i]').textContent = String(i + 1).padStart(2, '0');
+      $('[data-fl-name]').textContent = items[i].name;
+      $('[data-fl-meta]').textContent = items[i].meta;
+      box.classList.remove('is-swapping');
+    }, REDUCED ? 0 : 250);
+  };
+  const auto = () => { if (REDUCED) return; clearInterval(timer); timer = setInterval(() => show(i + 1), 6000); };
+  $('[data-fl-prev]').addEventListener('click', () => { show(i - 1); auto(); });
+  $('[data-fl-next]').addEventListener('click', () => { show(i + 1); auto(); });
+  box.addEventListener('mouseenter', () => clearInterval(timer));
+  box.addEventListener('mouseleave', auto);
+  auto();
 }
 
 function initHeroVideo() {
@@ -478,6 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFooter();
   initImgFallback();
   initHeroVideo();
+  initFlagships();
   initStrip();
   initServices();
   initProjects();
@@ -486,7 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCopy();
   initReveal();
   initCountUp();
-  initHeaderScroll(); initToTop();
+  initHeaderScroll(); initToTop(); initFeatured();
   initParallax();
   initPageTransitions();
   document.querySelectorAll('[data-icon]').forEach(el => {
