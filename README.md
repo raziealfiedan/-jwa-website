@@ -3,7 +3,7 @@
 Static HTML/CSS/JS. Open `index.html` in a browser with an internet connection. Photos and the hero video still load from the staging site.
 
 ## Pages
-- `index.html` Home (October 2026 direction, from Datuk James Wong's moodboard): split hero with the video and a red box that steps through four flagship projects, key figures, four numbered red service cards, the SESB KWSP HQ feature with a red panel, three project posters with red geometry, the team-and-fleet section, the red director card, the client logo wall, credentials, careers links and the call to action
+- `index.html` Home: hero video, key figures, about, featured project (SESB HQ, RM41.8M), Proudly Sabahan, services, the 24 clients from the company profile, testimonials, credentials, call to action
 - `about.html` About Us: Leadership, Key Senior Management, Awards & Recognition (plus media features), Our Story and milestones (to 2026), Vision / Mission / Values, Sustainability & Community
 - `services.html` Our Business: capacity figures, what we offer, why JWA, 6-stage process, and JWA Group (nine businesses, photos in `assets/img/group/`)
 - `projects.html` Projects: 28 projects with year and contract value from the Sept 2026 company profile, Ongoing and Flagship tags, sector and location filters, and a gallery. Data is in `assets/js/data.js`
@@ -14,11 +14,10 @@ Static HTML/CSS/JS. Open `index.html` in a browser with an internet connection. 
 - `sitemap.xml`, `robots.txt`, and share image `assets/img/og-image.jpg`
 
 ## Design system
-- October 2026 direction: white space, black-and-white architecture, bold red planes and curves (`--red-plane`), numbered red cards, red overlapping panels. Inner page heroes are a white panel beside the photo with a red curve. The director and senior management cutouts are in `assets/img/people/` (cut from the staging-site photos; ask JWA for high-resolution originals to sharpen them).
 - Logo: `assets/img/jwa-logo.png` is the full lockup (mark plus JWA DESIGN & BUILD, SDN BHD) for light backgrounds, taken from the revision deck. The favicon is `assets/img/favicon.png`. Replace both with the master files from the brand pack if you have them.
 - Fonts: Satoshi for headings (Fontshare), Geist for body text (Google Fonts)
 - Colours: white `#ffffff`, paper grey `#f4f4f2`, ink `#151515`, red `#c8102e` to `#7d0a1b`
-- Backgrounds are clean white and light grey (no grid or line pattern).
+- Background pattern: a faint drafting grid on grey bands and the footer, and a light diagonal hatch fading in on white sections. Tune it with `--grid-minor`, `--grid-major` and `--hatch` in `style.css`.
 - One slant for every diagonal: `--slant: 20deg` (and `--tan`) in `style.css`. White angled panels, red corners, hatch lines and button sweeps all follow it. Red corners are sized by height, and their width follows the slant automatically.
 - Sharp corners everywhere. There is no dark mode.
 - Motion (in `main.js` and at the end of `style.css`):
@@ -35,8 +34,7 @@ Static HTML/CSS/JS. Open `index.html` in a browser with an internet connection. 
 
 ## Before launch
 1. **Company profile.** `assets/JWA-Company-Profile.pdf` is the September 2026 portrait edition (36 pages, 12.6 MB). Replace it with the print-approved final if anything changes.
-2. **Hero video.** JWA is producing a new hero video. Replace `/images/hero/0112.mp4` in `index.html` when it arrives.
-3. **Remote assets.** Most project photos, award images, team photos and the hero video still load from the staging site's storage (Vercel Blob, Convex and `jwa.sampletest.website/images/...`). Before launch, download them, resize them to about 1600 px, save them into `assets/img/`, and update the URLs. Photos taken from the company profile are already local in `assets/img/projects/`. The hero video is `/images/hero/0112.mp4`.
+2. **Remote assets.** Most project photos, award images, team photos and the hero video still load from the staging site's storage (Vercel Blob, Convex and `jwa.sampletest.website/images/...`). Before launch, download them, resize them to about 1600 px, save them into `assets/img/`, and update the URLs. Photos taken from the company profile are already local in `assets/img/projects/`. The hero video is `/images/hero/0112.mp4`.
 3. **To confirm with JWA:**
    - Figures: RM200M+ completed, RM300M capacity, RM50M revenue, RM20M financing line, 800+ jobs, 90% local.
    - The careers email (`hr@jwadesignbuild.com`). Office hours are confirmed as Mon–Fri, 8am–5pm.

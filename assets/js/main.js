@@ -110,7 +110,7 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* Scroll reveal. Siblings that reveal together are staggered; lists marked
    as .stagger bring their children in one after another. */
-const STAGGER = '.logo-wall, .rcards, .creds, .steps, .why, .perks, .figgrid, .stats, .names, .logos, .clients, .values, .chips, .svc-list, .group, .pillars, .award-line, .facts';
+const STAGGER = '.creds, .steps, .why, .perks, .figgrid, .stats, .names, .logos, .clients, .values, .chips, .svc-list, .group, .pillars, .award-line, .facts';
 let revealIO;
 function initReveal() {
   document.querySelectorAll(STAGGER).forEach(el => el.classList.add('reveal', 'stagger'));
@@ -248,39 +248,8 @@ function initPageTransitions() {
   addEventListener('pageshow', e => { if (e.persisted) document.body.classList.remove('leaving'); });
 }
 
-/* Hero: the red box steps through JWA's flagship projects */
-function initFlagships() {
-  const box = document.querySelector('[data-flagships]');
-  if (!box) return;
-  const items = [
-    { name: 'SESB KWSP Headquarters', meta: 'Sabah Electricity · RM41.8 million' },
-    { name: 'SESB Warehouse, Inanam', meta: 'Sabah Electricity · RM31.88 million · On site' },
-    { name: 'ConocoPhillips Office', meta: 'ConocoPhillips · RM23 million · On site' },
-    { name: 'Qhazanah Sabah PPNS', meta: 'Qhazanah Sabah Berhad · RM6.2 million' }
-  ];
-  const $ = sel => box.querySelector(sel);
-  let i = 0, timer;
-  $('[data-fl-n]').textContent = String(items.length).padStart(2, '0');
-  const show = n => {
-    i = (n + items.length) % items.length;
-    box.classList.add('is-swapping');
-    setTimeout(() => {
-      $('[data-fl-i]').textContent = String(i + 1).padStart(2, '0');
-      $('[data-fl-name]').textContent = items[i].name;
-      $('[data-fl-meta]').textContent = items[i].meta;
-      box.classList.remove('is-swapping');
-    }, REDUCED ? 0 : 250);
-  };
-  const auto = () => { if (REDUCED) return; clearInterval(timer); timer = setInterval(() => show(i + 1), 6000); };
-  $('[data-fl-prev]').addEventListener('click', () => { show(i - 1); auto(); });
-  $('[data-fl-next]').addEventListener('click', () => { show(i + 1); auto(); });
-  box.addEventListener('mouseenter', () => clearInterval(timer));
-  box.addEventListener('mouseleave', auto);
-  auto();
-}
-
 function initHeroVideo() {
-  const v = document.querySelector('.hero video, .mhero video');
+  const v = document.querySelector('.hero video');
   const b = document.querySelector('[data-video-toggle]');
   if (!v || !b) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) { v.pause(); v.removeAttribute('autoplay'); }
@@ -509,7 +478,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFooter();
   initImgFallback();
   initHeroVideo();
-  initFlagships();
   initStrip();
   initServices();
   initProjects();
