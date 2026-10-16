@@ -14,7 +14,7 @@ const ICON = {
   li: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 110 5 2.5 2.5 0 010-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.06c.53-1 1.84-2.06 3.78-2.06 4.04 0 4.79 2.66 4.79 6.12V21h-4v-4.98c0-1.19-.02-2.72-1.66-2.72-1.66 0-1.91 1.3-1.91 2.63V21h-4z"/></svg>',
   fb: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.87.25-1.46 1.5-1.46h1.54V4.46A20 20 0 0014.3 4.3c-2.2 0-3.7 1.34-3.7 3.8v2.4H8.1v3h2.5V21z"/></svg>',
   ig: S('<rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".9" fill="currentColor" stroke="none"/>', 1.7),
-  wa: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 00-8.5 14.98L2 22l5.16-1.5A9.9 9.9 0 1012.04 2zm0 18.1a8.2 8.2 0 01-4.19-1.15l-.3-.18-3.06.89.9-2.98-.2-.31a8.2 8.2 0 1116.45-4.47 8.2 8.2 0 01-9.6 8.2zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06a6.7 6.7 0 01-3.35-2.93c-.25-.44.25-.4.72-1.34.08-.16.04-.31-.02-.43l-.76-1.83c-.2-.48-.4-.41-.56-.42h-.47a.9.9 0 00-.66.31 2.77 2.77 0 00-.86 2.06 4.8 4.8 0 001 2.55 11 11 0 004.22 3.73c1.57.68 2.19.74 2.97.62.48-.07 1.46-.6 1.67-1.18.2-.58.2-1.08.14-1.18-.06-.1-.22-.16-.47-.29z"/></svg>',
+  wa: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 012.89 7c0 5.45-4.44 9.89-9.88 9.89m8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 005.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.41z"/></svg>',
   link: S('<path d="M10 14a4.5 4.5 0 006.4 0l3-3a4.5 4.5 0 00-6.4-6.4l-1.2 1.2M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4l1.2-1.2"/>'),
   share: S('<circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4.1M8.2 13.2l7.6 4.1"/>'),
   // Figures & credentials
@@ -121,12 +121,13 @@ function renderFooter() {
   const year = new Date().getFullYear();
   host.outerHTML = `
   <footer class="footer">
+    <span class="footer-bar" aria-hidden="true"></span>
     <div class="wrap">
       <div class="footer-glass">
         <div class="footer-grid">
           <div class="footer-about">
             <a class="footer-brand" href="index.html"><img src="${LOGO}" alt="JWA Design & Build Sdn Bhd" width="623" height="377"></a>
-            <p>An architect-led design and build contractor from Kota Kinabalu, Sabah. CIDB Grade G7.</p>
+            <p>A proudly Sabahan CIDB Grade G7 contractor from Kota Kinabalu, building across Malaysia.</p>
             <div class="social">
               <a href="https://www.linkedin.com/company/jwa-design-build/" target="_blank" rel="noopener" aria-label="JWA on LinkedIn">${ICON.li}</a>
               <a href="https://www.facebook.com/jwadesignbuild/" target="_blank" rel="noopener" aria-label="JWA on Facebook">${ICON.fb}</a>
@@ -170,7 +171,7 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ---------- Motion: quiet entrances that follow the reader down the page ---------- */
 let revealIO;
 const REVEAL = [
-  '.mark', '.eyebrow', '.lead', '.stack > p:not(.lead)', '.btns', '.quote', '.figs', '.fig', '.vision-keys li', '.svc-list li', '.card', '.pcard', '.post',
+  '.mark', '.eyebrow', '.lead', '.stack > p:not(.lead)', '.btns', '.quote', '.figs', '.fig', '.vision-keys li', '.vkc', '.pf', '.pf-more li', '.svc-list li', '.card', '.pcard', '.post',
   '.news li', '.jrow', '.person', '.names div', '.vmv > div', '.cl', '.creds .cred', '.tags li', '.group li', '.logo-wall li', '.tq', '.os-card',
   '.speed-card', '.speed-row', '.steps-nav a', '.points div', '.apply article', '.ways a', '.ways div', '.pfacts div', '.pnav', '.marquee', '.sub-head',
   '.ring', '.eco-ring', '.eco-panels', '.ttree-scroll', '.article-body > *', '.article-side', '.form .field', '.filters', '.pub', '.chips li', '.legal > *', '.stamp'
@@ -199,7 +200,7 @@ function initReveal() {
   heads.forEach(splitWords);
   const photos = [...document.querySelectorAll('main .ph:not(.rvp), .pcard-media:not(.rvp), .pg-item:not(.rvp)')].filter(p => !p.closest('.news, .jrow, .pub, .award-imgs'));
   photos.forEach(p => p.classList.add('rvp'));
-  document.querySelectorAll('.hero-media, .phero-media, .split > .ph, .svc-top .ph, .feat .card:first-child .ph, .svc-row > .ph, .gallery .g1 .ph').forEach(p => p.classList.add('par'));
+  document.querySelectorAll('.hero:not(.hero--full) .hero-media, .phero-media, .split > .ph, .svc-top .ph, .feat .card:first-child .ph, .svc-row > .ph, .gallery .g1 .ph').forEach(p => p.classList.add('par'));
   const items = [...document.querySelectorAll(REVEAL)].filter(el => !el.classList.contains('rv') && !el.closest('.header, .footer, .lightbox'));
   items.forEach(el => el.classList.add('rv'));
   const all = [...document.querySelectorAll('.rv:not(.in), .wr:not(.in), .rvp:not(.in)')];
@@ -367,8 +368,9 @@ function initPageTransitions() {
 function initHeroVideo() {
   const v = document.querySelector('.hero video');
   const b = document.querySelector('[data-video-toggle]');
-  if (!v || !b) return;
+  if (!v) return;
   if (REDUCED) { v.pause(); v.removeAttribute('autoplay'); }
+  if (!b) return;
   const sync = () => { b.innerHTML = `<span class="ico">${v.paused ? ICON.play : ICON.pause}</span>${v.paused ? 'Play film' : 'Pause film'}`; };
   b.addEventListener('click', () => { v.paused ? v.play() : v.pause(); });
   v.addEventListener('play', sync); v.addEventListener('pause', sync); sync();
@@ -377,6 +379,96 @@ function initHeroVideo() {
     const loop = () => { if (v.duration) line.style.transform = `scaleX(${v.currentTime / v.duration})`; requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
   }
+}
+
+/* Home: words of the statement light up as they are read */
+function initRW() {
+  document.querySelectorAll('[data-rw]').forEach(el => {
+    const words = [];
+    const walk = node => [...node.childNodes].forEach(c => {
+      if (c.nodeType === 3) {
+        const f = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach(p => {
+          if (!p) return;
+          if (/^\s+$/.test(p)) { f.append(document.createTextNode(p)); return; }
+          const w = document.createElement('span'); w.className = 'rw-w'; w.textContent = p; words.push(w); f.append(w);
+        });
+        c.replaceWith(f);
+      } else if (c.nodeType === 1) walk(c);
+    });
+    walk(el);
+    if (REDUCED) { words.forEach(w => w.classList.add('on')); return; }
+    const upd = () => {
+      const r = el.getBoundingClientRect(), vh = innerHeight;
+      const p = Math.min(1, Math.max(0, (vh * 0.9 - r.top) / (r.height + vh * 0.4)));
+      const n = Math.round(p * words.length);
+      words.forEach((w, i) => w.classList.toggle('on', i < n));
+    };
+    addEventListener('scroll', () => requestAnimationFrame(upd), { passive: true });
+    addEventListener('resize', upd); upd();
+  });
+}
+
+/* Home: the four vision cards clear their red tint on hover, focus or tap */
+function initVkc() {
+  document.querySelectorAll('.vkc').forEach(c => {
+    c.addEventListener('click', () => c.classList.toggle('is-clear'));
+    c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); c.classList.toggle('is-clear'); } });
+  });
+}
+
+/* Home: hovering a service changes the photograph (first tap on touch, second tap opens) */
+function initSvcStage() {
+  document.querySelectorAll('[data-svc-stage]').forEach(st => {
+    const imgs = [...st.querySelectorAll('.svc-view img')], caps = [...st.querySelectorAll('.svc-cap span')], lis = [...st.querySelectorAll('.svc-list li')];
+    const set = k => {
+      imgs.forEach(i => i.classList.toggle('on', i.dataset.k === k));
+      caps.forEach(i => i.classList.toggle('on', i.dataset.k === k));
+      lis.forEach(i => i.classList.toggle('on', i.dataset.k === k));
+    };
+    const touch = matchMedia('(hover: none)');
+    lis.forEach(li => {
+      const k = li.dataset.k;
+      li.addEventListener('pointerenter', e => { if (e.pointerType !== 'touch') set(k); });
+      li.addEventListener('focusin', () => set(k));
+      li.querySelector('a').addEventListener('click', e => { if (touch.matches && !li.classList.contains('on')) { e.preventDefault(); set(k); } });
+    });
+  });
+}
+
+/* Home: the film magnetises the pointer; the hero eases away as you scroll */
+function initHeroPlay() {
+  const hero = document.querySelector('.hero--full');
+  if (!hero || REDUCED) return;
+  const a = hero.querySelector('.hero-play'), d = a && a.querySelector('.hp-disc');
+  if (d && matchMedia('(hover: hover)').matches) {
+    a.addEventListener('pointermove', e => { const r = a.getBoundingClientRect(); d.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .28}px, ${(e.clientY - r.top - r.height / 2) * .28}px)`; });
+    a.addEventListener('pointerleave', () => { d.style.transform = ''; });
+  }
+  let t = false;
+  const upd = () => { hero.style.setProperty('--hs', Math.min(1, Math.max(0, scrollY / innerHeight)).toFixed(3)); t = false; };
+  addEventListener('scroll', () => { if (!t) { t = true; requestAnimationFrame(upd); } }, { passive: true });
+  upd();
+}
+
+/* Home: the full film plays on this site, in a window over the page */
+function initFilm() {
+  document.querySelectorAll('[data-film]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const bg = document.querySelector('.hero video'); const wasPlaying = bg && !bg.paused; if (bg) bg.pause();
+      const box = document.createElement('div');
+      box.className = 'film'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'JWA film');
+      box.innerHTML = `<div class="film-inner"><button type="button" class="film-x" aria-label="Close film">&times;</button><div class="film-frame"><iframe src="https://www.youtube-nocookie.com/embed/${a.dataset.film}?autoplay=1&rel=0&modestbranding=1" title="JWA Design &amp; Build film" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div></div>`;
+      document.body.append(box); document.body.classList.add('film-open');
+      requestAnimationFrame(() => box.classList.add('on'));
+      const close = () => { box.classList.remove('on'); document.body.classList.remove('film-open'); document.removeEventListener('keydown', key); setTimeout(() => box.remove(), 350); if (bg && wasPlaying) bg.play(); a.focus(); };
+      const key = ev => { if (ev.key === 'Escape') close(); };
+      document.addEventListener('keydown', key);
+      box.addEventListener('click', ev => { if (ev.target === box || ev.target.closest('.film-x')) close(); });
+      box.querySelector('.film-x').focus();
+    });
+  });
 }
 
 /* Services ecosystem: hovering or focusing a service lights its path and shows its story */
@@ -574,6 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFooter();
   initImgFallback();
   initHeroVideo();
+  initRW(); initVkc(); initSvcStage(); initHeroPlay(); initFilm();
   initProjects();
   initProjectPage();
   initEcosystem();
