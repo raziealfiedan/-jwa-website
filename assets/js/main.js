@@ -437,6 +437,7 @@ function initSvcStage() {
 }
 
 /* Home: the film magnetises the pointer; the hero eases away as you scroll */
+
 function initHeroPlay() {
   const hero = document.querySelector('.hero--full');
   if (!hero || REDUCED) return;
@@ -679,7 +680,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initReveal();
   initParallax();
   initCountUp();
-  initSpotlight();
+  // spotlight removed (client feedback)
   initHeaderScroll(); initToTop();
   initPageTransitions();
   document.querySelectorAll('[data-icon]').forEach(el => {
