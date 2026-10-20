@@ -1,4 +1,4 @@
-# JWA Design & Build website, v29
+# JWA Design & Build website, v33
 
 Static HTML, CSS and JavaScript. Open `index.html` in a browser with an internet connection. Some photos and the hero film still load from the staging site's storage.
 
