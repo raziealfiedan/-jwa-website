@@ -21,7 +21,7 @@ const SECTORS = [
 
 const PROJECTS = [
   // ---- Flagships and ongoing work (company profile, Sept 2026)
-  { slug: 'sesb-kwsp-hq', story: 'A new home for Sabah’s power utility: a headquarters that turns a working building into a place people are proud to arrive at every morning.', name: 'SESB KWSP HQ', sector: 'corporate', flagship: true,
+  { slug: 'sesb-kwsp-hq', story: 'A new home for Sabah’s power utility: a headquarters that turns a working building into a place people are proud to arrive at every morning.', name: 'Sabah Electricity Headquarters', sector: 'corporate', flagship: true,
     client: 'Sabah Electricity Sdn Bhd', location: 'Kota Kinabalu', year: '2025', value: 'RM42 million', scope: 'Design & build office fit-out',
     images: ['offices/sesb-kwsp-hq/edited-photo-12.jpg', 'offices/sesb-kwsp-hq/edited-photo-1.jpg', 'offices/sesb-kwsp-hq/edited-photo-11.jpg', 'offices/sesb-kwsp-hq/edited-photo-10.jpg'] },
   { slug: 'inanam-sesb-warehouse', story: 'Under construction now: a warehouse and office for Sabah Electricity, designed and built by one team from the ground up.', name: 'Sabah Electricity Warehouse', sector: 'industrial', flagship: true, ongoing: true,

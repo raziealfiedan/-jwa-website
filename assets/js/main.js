@@ -68,39 +68,55 @@ const ICON = {
 const LOGO = 'assets/img/jwa-logo.png';
 const PROFILE = 'assets/JWA-Company-Profile.pdf';
 
-/* Menu order follows the homepage: About, Services, Projects, Careers, Newsletter, then Contact */
+/* Menu follows Datuk James's copy document (Oct 2026) */
 const NAV = [
-  ['about.html', 'About Us'],
-  ['services.html', 'Services'],
+  ['about.html', 'About JWA'],
+  ['services.html', 'Our Capabilities'],
   ['projects.html', 'Projects'],
+  ['jwa-way.html', 'The JWA Way'],
   ['careers.html', 'Careers'],
-  ['newsletter.html', 'Newsletter'],
-  ['contact.html', 'Contact Us']
+  ['newsletter.html', 'News'],
+  ['contact.html', 'Contact']
 ];
 const CERTS = [
   ['cidb', 'CIDB Grade G7', 'CIDB Malaysia'], ['mof', 'MOF registered', 'Ministry of Finance Malaysia'], ['acs', 'ISO 9001:2015', 'ACS Certification'],
   ['lam', 'LAM registered', 'Lembaga Arkitek Malaysia'], ['pam-mark', 'PAM member', 'Pertubuhan Akitek Malaysia'], ['miid-mark', 'MIID member', 'Malaysian Institute of Interior Designers']
 ];
 const SERVICES = [
-  ['design-build', 'Design & Build'], ['construction', 'Construction'], ['project-management', 'Project Management'],
-  ['architecture', 'Architecture'], ['interior-design', 'Interior Design'], ['carpentry', 'Carpentry & Fit-out'],
-  ['decor', 'Décor by MissReno'], ['facility-management', 'Facility Management']
+  ['design-build', 'Design & Build'], ['construction', 'Building Construction'], ['project-management', 'Project Management'],
+  ['architecture', 'Architecture'], ['interior-design', 'Interior Design'], ['carpentry', 'Carpentry Fit-Out'],
+  ['decor', 'Décor & Materials'], ['facility-management', 'Facility Management']
 ];
+
+/* Header options. Preview with ?hdr=glass (default), split, dark or band. Add &pick=1 to show a small switcher on the page. Remembered for the visit. */
+const pickParam = (name, allowed, dflt) => { let v = new URLSearchParams(location.search).get(name); try { if (v) sessionStorage.setItem('jwa-' + name, v); else v = sessionStorage.getItem('jwa-' + name); } catch (e) {} return allowed.includes(v) ? v : dflt; };
+const HDR = pickParam('hdr', ['glass', 'split', 'dark', 'band'], 'glass');
+const FTR = pickParam('ftr', ['ink', 'navy', 'crimson'], 'ink');
+const PICK = (() => { let v = new URLSearchParams(location.search).get('pick'); try { if (v) sessionStorage.setItem('jwa-pick', v); else v = sessionStorage.getItem('jwa-pick'); } catch (e) {} return v === '1'; })();
+document.documentElement.dataset.hdr = HDR;
+document.documentElement.dataset.ftr = FTR;
 
 function renderHeader() {
   const host = document.querySelector('[data-header]');
   if (!host) return;
   const page = document.body.dataset.page;
+  const link = ([href, label]) => `<a href="${href}"${href.replace('.html', '') === page ? ' aria-current="page"' : ''}>${label}</a>`;
+  const brand = `<a class="brand" href="index.html" aria-label="JWA Design & Build, home"><img src="${LOGO}" alt="JWA Design & Build Sdn Bhd" width="623" height="377"></a>`;
+  const prof = `<a class="nav-profile" href="${PROFILE}" download="JWA-Design-and-Build-Company-Profile.pdf">Company Profile (PDF)</a>`;
+  let left = '', nav;
+  if (HDR === 'split') {
+    const half = Math.ceil(NAV.length / 2);
+    left = `<nav class="nav nav--l" aria-label="Main">${NAV.slice(0, half).map(link).join('')}</nav>`;
+    nav = `<nav class="nav nav--r" aria-label="Main, more">${NAV.slice(half).map(link).join('')}<a class="nav-profile nav-profile--pill" href="${PROFILE}" download="JWA-Design-and-Build-Company-Profile.pdf">${ICON.dl}<span>Company Profile</span></a></nav>
+      <nav class="nav nav--m" id="nav" aria-label="Menu">${NAV.map(link).join('')}${prof}</nav>`;
+  } else {
+    nav = `<nav class="nav" id="nav" aria-label="Main">${NAV.map(link).join('')}${prof}</nav>`;
+  }
   host.outerHTML = `
   <header class="header">
     <div class="header-bar">
-      <a class="brand" href="index.html" aria-label="JWA Design & Build, home">
-        <img src="${LOGO}" alt="JWA Design & Build Sdn Bhd" width="623" height="377">
-      </a>
-      <nav class="nav" id="nav" aria-label="Main">
-        ${NAV.map(([href, label]) => `<a href="${href}"${href.replace('.html', '') === page ? ' aria-current="page"' : ''}>${label}</a>`).join('')}
-        <a class="nav-profile" href="${PROFILE}" download="JWA-Design-and-Build-Company-Profile.pdf">Company Profile (PDF)</a>
-      </nav>
+      ${HDR === 'split' ? left + brand : brand}
+      ${nav}
       <div class="header-actions">
         <a class="btn-profile" href="${PROFILE}" download="JWA-Design-and-Build-Company-Profile.pdf" title="Download company profile (PDF, 12.6 MB)"><span class="bp-ico">${ICON.dl}</span><span class="bp-txt">Company Profile</span></a>
         <button class="menu-btn" aria-label="Open menu" aria-controls="nav" aria-expanded="false"><span></span></button>
@@ -108,6 +124,11 @@ function renderHeader() {
       <span class="progress" aria-hidden="true"></span>
     </div>
   </header>`;
+  if (PICK) {
+    const q = (k, v) => { const u = new URL(location.href); u.searchParams.set(k, v); u.searchParams.set('pick', '1'); return u.pathname.split('/').pop() + u.search; };
+    const row = (label, key, cur, opts) => `<div><b>${label}</b>${opts.map(o => `<a href="${q(key, o)}"${o === cur ? ' class="on"' : ''}>${o}</a>`).join('')}</div>`;
+    document.body.insertAdjacentHTML('beforeend', `<div class="picker" role="group" aria-label="Design options">${row('Header', 'hdr', HDR, ['glass', 'split', 'dark', 'band'])}</div>`);
+  }
   document.body.insertAdjacentHTML('afterbegin', '<a class="skip" href="#main">Skip to content</a>');
   const btn = document.querySelector('.menu-btn');
   const setMenu = open => { document.body.classList.toggle('menu-open', open); btn.setAttribute('aria-expanded', open); btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
@@ -127,7 +148,8 @@ function renderFooter() {
         <div class="footer-grid">
           <div class="footer-about">
             <a class="footer-brand" href="index.html"><img src="${LOGO}" alt="JWA Design & Build Sdn Bhd" width="623" height="377"></a>
-            <p>A proudly Sabahan CIDB Grade G7 contractor from Kota Kinabalu, building across Malaysia.</p>
+            <p>Transforming Sabah’s Construction Industry Through Excellence, Speed &amp; Innovation.</p>
+            <p class="footer-sub">International Standards. Smarter Delivery. Integrated Expertise. Local Talent.</p>
             <div class="social">
               <a href="https://www.linkedin.com/company/jwa-design-build/" target="_blank" rel="noopener" aria-label="JWA on LinkedIn">${ICON.li}</a>
               <a href="https://www.facebook.com/jwadesignbuild/" target="_blank" rel="noopener" aria-label="JWA on Facebook">${ICON.fb}</a>
@@ -136,7 +158,7 @@ function renderFooter() {
           </div>
           <div>
             <h4>Explore</h4>
-            <ul>${NAV.map(([h, l]) => `<li><a href="${h}">${l}</a></li>`).join('')}</ul>
+            <ul>${[['index.html', 'Home'], ...NAV].map(([h, l]) => `<li><a href="${h}">${l}</a></li>`).join('')}</ul>
           </div>
           <div>
             <h4>Services</h4>
@@ -153,11 +175,11 @@ function renderFooter() {
           </div>
         </div>
         <div class="footer-creds" aria-label="Certifications">
-          ${CERTS.map(([k, label, alt]) => `<span class="fc"><img src="assets/img/certs/${k}.webp" alt="${alt}" loading="lazy">${label}</span>`).join('')}
+          ${CERTS.map(([k, label, alt]) => `<span class="fc"><img src="assets/img/certs/gold/${k}.png" alt="${alt}" loading="lazy">${label}</span>`).join('')}
         </div>
       </div>
       <div class="footer-base">
-        <span>© ${year} JWA Design &amp; Build Sdn Bhd (1197767-W)</span>
+        <span>© ${year} JWA Design &amp; Build. All rights reserved. JWA Design &amp; Build Sdn Bhd (1197767-W)</span>
         <nav><a href="privacy.html">Privacy notice</a><a href="https://maps.google.com/?q=YLY+Plaza+Inanam+Kota+Kinabalu" target="_blank" rel="noopener">Directions</a></nav>
       </div>
     </div>
@@ -171,7 +193,7 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ---------- Motion: quiet entrances that follow the reader down the page ---------- */
 let revealIO;
 const REVEAL = [
-  '.mark', '.eyebrow', '.lead', '.stack > p:not(.lead)', '.btns', '.quote', '.figs', '.fig', '.vision-keys li', '.vkc', '.pf', '.pf-more li', '.svc-list li', '.card', '.pcard', '.post',
+  '.mark', '.eyebrow', '.lead', '.stack > p:not(.lead)', '.btns', '.quote', '.figs', '.fig', '.vision-keys li', '.vkc', '.pf', '.pf-more li', '.svc-list li', '.card', '.pcard', '.alb', '.post',
   '.news li', '.jrow', '.person', '.names div', '.vmv > div', '.cl', '.creds .cred', '.tags li', '.group li', '.logo-wall li', '.tq', '.os-card',
   '.speed-card', '.speed-row', '.steps-nav a', '.points div', '.apply article', '.ways a', '.ways div', '.pfacts div', '.pnav', '.marquee', '.sub-head',
   '.ring', '.eco-ring', '.eco-panels', '.ttree-scroll', '.article-body > *', '.article-side', '.form .field', '.filters', '.pub', '.chips li', '.legal > *', '.stamp'
@@ -320,7 +342,7 @@ function initHeaderScroll() {
     h.classList.toggle('scrolled', y > 24);
     const hb = h.querySelector('.header-bar').getBoundingClientRect(), probe = (hb.top + hb.bottom) / 2;
     const dark = darks.some(d => { const r = d.getBoundingClientRect(); return r.top <= probe && r.bottom >= probe; });
-    h.classList.toggle('on-dark', dark);
+    h.classList.toggle('on-dark', HDR === 'dark' || (HDR !== 'band' && dark));
     bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
     ticking = false;
   };
@@ -438,6 +460,25 @@ function initSvcStage() {
 
 /* Home: the film magnetises the pointer; the hero eases away as you scroll */
 
+/* Carousels: scroll-snap track with previous / next buttons and a running count */
+function initCarousels() {
+  document.querySelectorAll('[data-car]').forEach(car => {
+    const tr = car.querySelector('.car-track'), prev = car.querySelector('[data-dir="-1"]'), next = car.querySelector('[data-dir="1"]'), cnt = car.querySelector('.car-count');
+    if (!tr) return;
+    const kids = [...tr.children];
+    const step = () => { const a = kids[0], b = kids[1]; return b ? b.offsetLeft - a.offsetLeft : a.offsetWidth; };
+    const upd = () => {
+      const st = step(), per = Math.max(1, Math.round(tr.clientWidth / st)), first = Math.round(tr.scrollLeft / st);
+      const fit = tr.scrollWidth <= tr.clientWidth + 4; car.classList.toggle('is-fit', fit);
+      if (prev) prev.disabled = tr.scrollLeft < 4; if (next) next.disabled = tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 4;
+      if (cnt) cnt.textContent = `${first + 1} to ${Math.min(kids.length, first + per)} of ${kids.length}`;
+    };
+    [prev, next].forEach(b => b && b.addEventListener('click', () => tr.scrollBy({ left: Number(b.dataset.dir) * step() * Math.max(1, Math.round(tr.clientWidth / step())), behavior: REDUCED ? 'auto' : 'smooth' })));
+    tr.addEventListener('scroll', () => requestAnimationFrame(upd), { passive: true });
+    addEventListener('resize', upd); upd();
+  });
+}
+
 function initHeroPlay() {
   const hero = document.querySelector('.hero--full');
   if (!hero || REDUCED) return;
@@ -537,28 +578,41 @@ function initProjects() {
   const count = k => k === 'all' ? PROJECTS.length : PROJECTS.filter(p => p.sector === k).length;
   bar.innerHTML = `<div class="filter-chips">${SECTORS.filter(s => count(s.key) > 0)
     .map(s => `<button type="button" data-k="${s.key}" aria-pressed="${s.key === current}">${s.label}<small>${count(s.key)}</small></button>`).join('')}</div>`;
+  const BLURB = {
+    all: ['Every Project. One Standard of Excellence.', 'Regardless of scale or complexity, we approach every project with the same commitment to quality, proactive management, innovation and accountability.'],
+    corporate: ['Built for Business.', 'Quality commercial environments designed and constructed to support business performance, operational efficiency and long-term value.'],
+    commercial: ['Built for Business.', 'Quality commercial environments designed and constructed to support business performance, operational efficiency and long-term value.'],
+    government: ['Building for Progress.', 'Facilities and developments delivered with professionalism, accountability and a commitment to serving organisations and communities.'],
+    industrial: ['Built for Performance.', 'Practical, durable and efficient construction solutions designed to support demanding operational requirements.'],
+    hotels: ['Excellence in Every Detail.', 'High-quality interior and specialist construction works where design, functionality and precision come together.'],
+    fnb: ['Excellence in Every Detail.', 'High-quality interior and specialist construction works where design, functionality and precision come together.'],
+    residential: ['Excellence in Every Detail.', 'High-quality interior and specialist construction works where design, functionality and precision come together.']
+  };
+  const blurb = document.querySelector('[data-filter-blurb]');
+  const more = document.querySelector('[data-more]');
+  const STEP = 9;
+  let shown = STEP;
   const card = p => `
-      <a class="pcard" href="${projectUrl(p)}">
-        <span class="pcard-media"><img src="${p.images[0]}" alt="${p.name}" loading="lazy">
-          <span class="badges">${p.ongoing ? '<span class="badge badge--live">Under construction</span>' : ''}</span></span>
-        <span class="pcard-body">
-          <span class="pcard-sector">${p.sectorLabel}</span>
-          <b>${p.name}</b>
-          <span class="pcard-meta">${[p.location, p.year, p.value].filter(Boolean).join('<i aria-hidden="true">·</i>')}</span>
-          <span class="pcard-more">View project ${ICON.arrow}</span>
-        </span>
+      <a class="alb" href="${projectUrl(p)}">
+        <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
+        ${p.ongoing ? '<span class="alb-tag">Under construction</span>' : ''}
+        
+        <span class="alb-cap"><small>${p.sectorLabel}</small><b>${p.name}</b><span>${[p.location, p.year].filter(Boolean).join(' · ')}</span></span>
       </a>`;
   const draw = () => {
     const list = PROJECTS.filter(p => current === 'all' || p.sector === current);
-    grid.innerHTML = list.map(card).join('');
+    grid.innerHTML = list.slice(0, shown).map(card).join('');
+    if (blurb) { const t = BLURB[current] || BLURB.all; blurb.innerHTML = `<b>${t[0]}</b><span>${t[1]}</span>`; }
+    if (more) { const left = list.length - shown; more.hidden = left <= 0; more.querySelector('span').textContent = `Show more projects (${Math.max(left, 0)} more)`; }
     initReveal();
   };
+  if (more) more.querySelector('button').addEventListener('click', () => { shown += STEP; draw(); });
   bar.addEventListener('click', e => {
     const b = e.target.closest('button[data-k]'); if (!b) return;
     current = b.dataset.k;
     bar.querySelectorAll('button[data-k]').forEach(x => x.setAttribute('aria-pressed', x === b));
     history.replaceState(null, '', current === 'all' ? location.pathname : '#' + current);
-    draw();
+    shown = STEP; draw();
   });
   draw();
 }
@@ -580,7 +634,7 @@ function initProjectPage() {
   hero.querySelector('[data-p-sector]').textContent = p.sectorLabel;
   hero.querySelector('[data-p-lead]').textContent = p.story || `${p.scope}${p.client && p.client !== 'Private client' ? ` for ${p.client}` : ''}, ${p.location}.`;
   const TBC = '<span class="tbc">To be confirmed</span>';
-  root.querySelector('[data-p-facts]').innerHTML = `
+  document.querySelector('[data-p-facts]').innerHTML = `
     <div>${ICON.building}<dt>Client</dt><dd>${p.client || TBC}</dd></div>
     <div>${ICON.pin}<dt>Location</dt><dd>${p.location}</dd></div>
     <div>${ICON.years}<dt>Year</dt><dd>${p.year || TBC}</dd></div>
@@ -589,9 +643,6 @@ function initProjectPage() {
     <div>${ICON.plan}<dt>Scope</dt><dd>${p.scope}</dd></div>`;
   const gal = root.querySelector('[data-p-gallery]');
   gal.innerHTML = p.images.map((src, j) => `<button type="button" class="pg-item${j === 0 ? ' pg-item--wide' : ''}" data-i="${j}" aria-label="Open photo ${j + 1}"><img src="${src}" alt="${p.name}, photo ${j + 1}" loading="lazy"></button>`).join('');
-  root.querySelector('[data-p-next]').innerHTML = `
-    <a class="pnav pnav--prev" href="${projectUrl(prev)}"><span>${ICON.left} Previous project</span><b>${prev.name}</b></a>
-    <a class="pnav pnav--next" href="${projectUrl(next)}" style="--bg:url('${next.images[0]}')"><span>Next project ${ICON.arrow}</span><b>${next.name}</b></a>`;
   // Related: same sector first
   const rel = PROJECTS.filter(q => q !== p && q.sector === p.sector).concat(PROJECTS.filter(q => q !== p && q.sector !== p.sector)).slice(0, 3);
   root.querySelector('[data-p-related]').innerHTML = rel.map(q => `
@@ -624,6 +675,8 @@ function initNewsletter() {
     const b = e.target.closest('button'); if (!b) return;
     bar.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
     posts.forEach(p => { p.hidden = b.dataset.k !== 'all' && p.dataset.cat !== b.dataset.k; });
+    document.querySelectorAll('.cat-notes > [data-k]').forEach(n => { n.hidden = n.dataset.k !== b.dataset.k; });
+    const empty = document.querySelector('[data-empty]'); if (empty) empty.hidden = posts.some(p => !p.hidden);
   });
 }
 
@@ -640,10 +693,10 @@ function initForm() {
   const f = document.querySelector('[data-enquiry]');
   if (!f) return;
   const note = f.querySelector('.form-note');
-  const reach = ['phone', 'email', 'address'].map(n => f.elements[n]).filter(Boolean);
+  const reach = ['phone', 'email'].map(n => f.elements[n]).filter(Boolean);
   const check = () => {
     const any = reach.some(el => el.value.trim());
-    reach.forEach(el => el.setCustomValidity(any ? '' : 'Please give us at least one way to reach you: phone, email or address.'));
+    reach.forEach(el => el.setCustomValidity(any ? '' : 'Please give us at least one way to reach you: phone or email.'));
     f.querySelector('.reach-hint')?.classList.toggle('ok', any);
   };
   reach.forEach(el => el.addEventListener('input', check));
@@ -652,10 +705,10 @@ function initForm() {
     check();
     if (!f.checkValidity()) { f.reportValidity(); return; }
     const d = Object.fromEntries(new FormData(f));
-    const subject = `Project enquiry: ${d.type || 'General'}${d.company ? ' — ' + d.company : ''}`;
+    const subject = `${d.type || 'Enquiry'}${d.company ? ' — ' + d.company : ''}`;
     const body = [
-      `Name: ${d.name}`, `Company: ${d.company || '-'}`, `Phone: ${d.phone || '-'}`, `Email: ${d.email || '-'}`, `Address: ${d.address || '-'}`,
-      `Project type: ${d.type || '-'}`, '', d.message || ''
+      `Name: ${d.name}`, `Organisation: ${d.company || '-'}`, `Contact number: ${d.phone || '-'}`, `Email: ${d.email || '-'}`,
+      `Nature of enquiry: ${d.type || '-'}`, `Project location: ${d.address || '-'}`, '', 'Project description:', d.message || ''
     ].join('\n');
     location.href = `mailto:inquiries@jwadesignbuild.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     note.innerHTML = 'Thank you. Your email app should now open with your message filled in. If it doesn’t, call us on <a href="tel:+6088335618">+6088 335 618</a> or WhatsApp <a href="https://wa.me/60128802432">+6012 880 2432</a>.';
@@ -667,7 +720,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFooter();
   initImgFallback();
   initHeroVideo();
-  initRW(); initVkc(); initSvcStage(); initHeroPlay(); initFilm();
+  initRW(); initVkc(); initSvcStage(); initHeroPlay(); initFilm(); initCarousels();
   initProjects();
   initProjectPage();
   initEcosystem();
