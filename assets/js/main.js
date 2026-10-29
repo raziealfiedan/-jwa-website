@@ -145,6 +145,7 @@ function renderFooter() {
     <span class="footer-bar" aria-hidden="true"></span>
     <div class="wrap">
       <div class="footer-glass">
+        <div class="footer-cta"><p class="footer-cta-h">Let’s Build Better. Faster. Together.</p><div class="footer-cta-b"><a class="btn btn--red" href="contact.html">Contact Us <span data-icon="arrow"></span></a><a class="btn btn--line" href="${PROFILE}" download="JWA-Design-and-Build-Company-Profile.pdf">Company Profile (PDF)</a></div></div>
         <div class="footer-grid">
           <div class="footer-about">
             <a class="footer-brand" href="index.html"><img src="${LOGO}" alt="JWA Design & Build Sdn Bhd" width="623" height="377"></a>
@@ -159,10 +160,6 @@ function renderFooter() {
           <div>
             <h4>Explore</h4>
             <ul>${[['index.html', 'Home'], ...NAV].map(([h, l]) => `<li><a href="${h}">${l}</a></li>`).join('')}</ul>
-          </div>
-          <div>
-            <h4>Services</h4>
-            <ul>${SERVICES.map(([k, l]) => `<li><a href="services.html#${k}">${l}</a></li>`).join('')}</ul>
           </div>
           <div>
             <h4>Visit us</h4>
@@ -218,7 +215,8 @@ function splitWords(el) {
   el.classList.add('wr');
 }
 function initReveal() {
-  const heads = [...document.querySelectorAll('h1.display, h1, .h2:not(.wr)')].filter(h => !h.closest('.menu, .footer') && !h.dataset.split);
+  const NOROLL = ['about', 'services', 'careers', 'newsletter'].includes(document.body.dataset.page);
+  const heads = NOROLL ? [] : [...document.querySelectorAll('h1.display, h1, .h2:not(.wr)')].filter(h => !h.closest('.menu, .footer') && !h.dataset.split);
   heads.forEach(splitWords);
   const photos = [...document.querySelectorAll('main .ph:not(.rvp), .pcard-media:not(.rvp), .pg-item:not(.rvp)')].filter(p => !p.closest('.news, .jrow, .pub, .award-imgs'));
   photos.forEach(p => p.classList.add('rvp'));
@@ -579,7 +577,7 @@ function initProjects() {
   bar.innerHTML = `<div class="filter-chips">${SECTORS.filter(s => count(s.key) > 0)
     .map(s => `<button type="button" data-k="${s.key}" aria-pressed="${s.key === current}">${s.label}<small>${count(s.key)}</small></button>`).join('')}</div>`;
   const BLURB = {
-    all: ['Every Project. One Standard of Excellence.', 'Regardless of scale or complexity, we approach every project with the same commitment to quality, proactive management, innovation and accountability.'],
+    all: ['Our work reflects our commitment to professional expertise, quality workmanship and efficient project delivery.', 'From corporate headquarters to industrial facilities and institutional developments, every project demonstrates our capabilities and the trust placed in us.'],
     corporate: ['Built for Business.', 'Quality commercial environments designed and constructed to support business performance, operational efficiency and long-term value.'],
     commercial: ['Built for Business.', 'Quality commercial environments designed and constructed to support business performance, operational efficiency and long-term value.'],
     government: ['Building for Progress.', 'Facilities and developments delivered with professionalism, accountability and a commitment to serving organisations and communities.'],
@@ -645,7 +643,7 @@ function initProjectPage() {
   gal.innerHTML = p.images.map((src, j) => `<button type="button" class="pg-item${j === 0 ? ' pg-item--wide' : ''}" data-i="${j}" aria-label="Open photo ${j + 1}"><img src="${src}" alt="${p.name}, photo ${j + 1}" loading="lazy"></button>`).join('');
   // Related: same sector first
   const rel = PROJECTS.filter(q => q !== p && q.sector === p.sector).concat(PROJECTS.filter(q => q !== p && q.sector !== p.sector)).slice(0, 3);
-  root.querySelector('[data-p-related]').innerHTML = rel.map(q => `
+  const relEl = root.querySelector('[data-p-related]'); if (relEl) relEl.innerHTML = rel.map(q => `
     <a class="pcard" href="${projectUrl(q)}"><span class="pcard-media"><img src="${q.images[0]}" alt="${q.name}" loading="lazy"></span>
       <span class="pcard-body"><span class="pcard-sector">${q.sectorLabel}</span><b>${q.name}</b><span class="pcard-meta">${[q.location, q.year].filter(Boolean).join('<i aria-hidden="true">·</i>')}</span></span></a>`).join('');
   // Lightbox
@@ -741,3 +739,101 @@ document.addEventListener('DOMContentLoaded', () => {
     else el.insertAdjacentHTML('afterbegin', ICON[el.dataset.icon]);
   });
 });
+
+/* No lone words: the last three words of every text block stay together, so a line never ends on one or two words.
+   Runs on load and again whenever the page builds new text (project cards, filters, news). */
+(function () {
+  const SKIP = /^(script|style|svg|textarea|select|option|code|pre|noscript|input|iframe|canvas)$/i;
+  const WS = /[^\S ]/;
+  const seen = new WeakMap();
+  const tail = el => {
+    const parts = [];
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+      acceptNode: n => n.nodeType === 3 ? NodeFilter.FILTER_ACCEPT
+        : SKIP.test(n.localName) ? NodeFilter.FILTER_REJECT
+        : n.localName === 'br' ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
+    });
+    let n;
+    while ((n = w.nextNode())) { if (n.nodeType === 1) parts.length = 0; else parts.push(n); }
+    return parts;
+  };
+  const glue = el => {
+    const parts = tail(el);
+    if (!parts.length) return;
+    const has = parts.map(t => /\S/.test(t.nodeValue.replace(/\u00a0/g, ' ')));
+    let need = 2, word = false;
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const s = parts[i].nodeValue, out = [];
+      const before = has.slice(0, i).some(Boolean);
+      let j = s.length, cut = 0;
+      while (j > 0) {
+        const c = s[j - 1];
+        if (WS.test(c)) {
+          let k = j; while (k > 0 && WS.test(s[k - 1])) k--;
+          const hasBefore = before || /\S/.test(s.slice(0, k));
+          if (word && need > 0 && hasBefore) { out.push('\u00a0'); need--; word = false; if (need === 0) { cut = k; break; } }
+          else out.push(s.slice(k, j));
+          j = k;
+        } else { out.push(c); word = true; j--; }
+      }
+      /* a hyphen is a break opportunity too: keep hyphenated words in one piece inside the last three words */
+      const ns = s.slice(0, cut) + out.reverse().join('').replace(/-(?=[A-Za-z])/g, '-\u2060');
+      if (ns !== s) parts[i].nodeValue = ns;
+      if (need === 0) break;
+    }
+  };
+  /* Headings whose words are animated as separate boxes: keep the last words together with a no-wrap wrapper */
+  const unwrap = nb => { while (nb.firstChild) nb.parentNode.insertBefore(nb.firstChild, nb); nb.remove(); };
+  const glueW = el => {
+    let ws = [...el.querySelectorAll('.w')];
+    const br = [...el.querySelectorAll('br')].pop();
+    if (br) ws = ws.filter(w => br.compareDocumentPosition(w) & Node.DOCUMENT_POSITION_FOLLOWING);
+    ws = ws.filter(w => !w.parentElement.classList.contains('nb'));
+    if (ws.length < 2) return;
+    const attempt = () => {
+      for (const n of [3, 2]) {
+        const g = ws.slice(-n); if (g.length < n) continue;
+        if (!g.every(w => w.parentNode === g[0].parentNode)) continue;
+        const nb = document.createElement('span'); nb.className = 'nb';
+        g[0].parentNode.insertBefore(nb, g[0]);
+        let x = g[0]; const move = [];
+        while (x) { move.push(x); if (x === g[n - 1]) break; x = x.nextSibling; }
+        move.forEach(m => nb.appendChild(m));
+        if (el.scrollWidth <= el.clientWidth + 1) return true;
+        unwrap(nb);
+      }
+      return false;
+    };
+    if (attempt()) return;
+    /* a very long word on a phone: let the heading come down a little so the last words fit together */
+    const base = parseFloat(getComputedStyle(el).fontSize);
+    for (const k of [0.94, 0.88, 0.82, 0.76, 0.72]) {
+      el.style.fontSize = (base * k) + 'px';
+      if (attempt()) { el.dataset.shrunk = '1'; return; }
+    }
+    el.style.fontSize = '';
+  };
+  const run = () => {
+    document.querySelectorAll('body *').forEach(el => {
+      if (SKIP.test(el.localName) || el.closest('svg,script,style,textarea,select,noscript,.vkc,.ct-trio .h3')) return;
+      const sig = el.textContent + '#' + el.getElementsByTagName('*').length; if (seen.get(el) === sig) return;
+      const d = getComputedStyle(el).display; if (d === 'inline' || d === 'none' || d === 'contents') { return; }
+      const own = [...el.childNodes].some(n => n.nodeType === 3 && /\S/.test(n.nodeValue));
+      const inlineOnly = [...el.children].every(c => /^inline/.test(getComputedStyle(c).display) || c.localName === 'br');
+      if (!own && !inlineOnly) return;
+      /* a separator dot or dash stays with the word before it, never starting a line */
+      [...el.childNodes].forEach(n => { if (n.nodeType === 3 && /\s[·•|–—](?=\s)/.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/\s+([·•|–—])(?=\s)/g, '\u00a0$1'); });
+      glue(el); if (el.querySelector('.w')) glueW(el); seen.set(el, el.textContent + '#' + el.getElementsByTagName('*').length);
+    });
+  };
+  let t;
+  const queue = () => { clearTimeout(t); t = setTimeout(run, 60); };
+  const start = () => {
+    run();
+    new MutationObserver(queue).observe(document.body, { childList: true, subtree: true, characterData: true });
+    addEventListener('load', run);
+    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { document.querySelectorAll('.nb').forEach(unwrap); document.querySelectorAll('[data-shrunk]').forEach(e => { e.style.fontSize = ''; delete e.dataset.shrunk; }); document.querySelectorAll('body *').forEach(e => seen.delete(e)); run(); }, 250); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(run);
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(start, 0)); else setTimeout(start, 0);
+})();
