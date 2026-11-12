@@ -150,7 +150,7 @@ function renderFooter() {
           <div class="footer-about">
             <a class="footer-brand" href="index.html"><img src="${LOGO}" alt="JWA Design & Build Sdn Bhd" width="623" height="377"></a>
             <p>Transforming Sabah’s Construction Industry Through Excellence, Speed &amp; Innovation.</p>
-            <p class="footer-sub">International Standards. Smarter Delivery. Integrated Expertise. Local Talent.</p>
+            <p class="footer-sub"><span class="nw">International Standards.</span> <span class="nw">Smarter Delivery.</span><br> <span class="nw">Integrated Expertise.</span> <span class="nw">Local Talent.</span></p>
             <div class="social">
               <a href="https://www.linkedin.com/company/jwa-design-build/" target="_blank" rel="noopener" aria-label="JWA on LinkedIn">${ICON.li}</a>
               <a href="https://www.facebook.com/jwadesignbuild/" target="_blank" rel="noopener" aria-label="JWA on Facebook">${ICON.fb}</a>
@@ -746,6 +746,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const SKIP = /^(script|style|svg|textarea|select|option|code|pre|noscript|input|iframe|canvas)$/i;
   const WS = /[^\S ]/;
   const seen = new WeakMap();
+  /* every text node we change, with its original words, so a resize starts from the original text instead of gluing more words each time */
+  const touched = new Map();
+  const keep = (n, v) => { if (!touched.has(n)) touched.set(n, v); };
   const tail = el => {
     const parts = [];
     const w = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
@@ -758,8 +761,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return parts;
   };
   const glue = el => {
-    const parts = tail(el);
-    if (!parts.length) return;
+    const parts = tail(el), changed = [];
+    if (!parts.length) return changed;
     const has = parts.map(t => /\S/.test(t.nodeValue.replace(/\u00a0/g, ' ')));
     let need = 2, word = false;
     for (let i = parts.length - 1; i >= 0; i--) {
@@ -778,9 +781,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       /* a hyphen is a break opportunity too: keep hyphenated words in one piece inside the last three words */
       const ns = s.slice(0, cut) + out.reverse().join('').replace(/-(?=[A-Za-z])/g, '-\u2060');
-      if (ns !== s) parts[i].nodeValue = ns;
+      if (ns !== s) { keep(parts[i], s); parts[i].nodeValue = ns; changed.push([parts[i], s]); }
       if (need === 0) break;
     }
+    return changed;
   };
   /* Headings whose words are animated as separate boxes: keep the last words together with a no-wrap wrapper */
   const unwrap = nb => { while (nb.firstChild) nb.parentNode.insertBefore(nb.firstChild, nb); nb.remove(); };
@@ -790,6 +794,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (br) ws = ws.filter(w => br.compareDocumentPosition(w) & Node.DOCUMENT_POSITION_FOLLOWING);
     ws = ws.filter(w => !w.parentElement.classList.contains('nb'));
     if (ws.length < 2) return;
+    /* the room the heading has before any words are held together (a grid or flex item would otherwise grow to fit them) */
+    const room = el.clientWidth;
     const attempt = () => {
       for (const n of [3, 2]) {
         const g = ws.slice(-n); if (g.length < n) continue;
@@ -799,7 +805,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let x = g[0]; const move = [];
         while (x) { move.push(x); if (x === g[n - 1]) break; x = x.nextSibling; }
         move.forEach(m => nb.appendChild(m));
-        if (el.scrollWidth <= el.clientWidth + 1) return true;
+        if (el.scrollWidth <= el.clientWidth + 1 && nb.getBoundingClientRect().width <= room + 1) return true;
         unwrap(nb);
       }
       return false;
@@ -813,27 +819,80 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     el.style.fontSize = '';
   };
+  /* Justified paragraphs: when keeping the last three words together leaves the line above them thin,
+     end that line early (left-aligned) instead of stretching its words apart. */
+  const easeJustify = el => {
+    const last = el.lastChild;
+    if (!last || last.nodeType !== 3 || el.querySelector('br.jbr')) return;
+    const s = last.nodeValue, at = s.replace(/\s+$/, '').lastIndexOf(' ');
+    if (at < 1) return;
+    const r = document.createRange();
+    const box = (a, b) => { r.setStart(last, a); r.setEnd(last, b); return r.getBoundingClientRect(); };
+    const prev = el.style.textAlign; el.style.textAlign = 'left';
+    const before = box(at - 1, at), after = box(at + 1, at + 2), frame = el.getBoundingClientRect();
+    const pad = parseFloat(getComputedStyle(el).paddingRight) || 0;
+    const slack = frame.right - pad - before.right;
+    el.style.textAlign = prev;
+    if (after.top - before.top < 4 || slack < frame.width * 0.1) return;
+    const rest = last.splitText(at);
+    rest.nodeValue = rest.nodeValue.slice(1);
+    const br = document.createElement('br'); br.className = 'jbr';
+    el.insertBefore(br, rest);
+  };
+  const unease = () => document.querySelectorAll('br.jbr').forEach(br => {
+    const a = br.previousSibling, b = br.nextSibling;
+    if (a && b && a.nodeType === 3 && b.nodeType === 3) { a.nodeValue = a.nodeValue + ' ' + b.nodeValue; b.remove(); }
+    br.remove();
+  });
   const run = () => {
+    const just = [], work = [];
     document.querySelectorAll('body *').forEach(el => {
       if (SKIP.test(el.localName) || el.closest('svg,script,style,textarea,select,noscript,.vkc,.ct-trio .h3')) return;
       const sig = el.textContent + '#' + el.getElementsByTagName('*').length; if (seen.get(el) === sig) return;
-      const d = getComputedStyle(el).display; if (d === 'inline' || d === 'none' || d === 'contents') { return; }
+      const cs = getComputedStyle(el), d = cs.display; if (d === 'inline' || d === 'none' || d === 'contents') { return; }
       const own = [...el.childNodes].some(n => n.nodeType === 3 && /\S/.test(n.nodeValue));
       const inlineOnly = [...el.children].every(c => /^inline/.test(getComputedStyle(c).display) || c.localName === 'br');
       if (!own && !inlineOnly) return;
       /* a separator dot or dash stays with the word before it, never starting a line */
-      [...el.childNodes].forEach(n => { if (n.nodeType === 3 && /\s[·•|–—](?=\s)/.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/\s+([·•|–—])(?=\s)/g, '\u00a0$1'); });
-      glue(el); if (el.querySelector('.w')) glueW(el); seen.set(el, el.textContent + '#' + el.getElementsByTagName('*').length);
+      [...el.childNodes].forEach(n => { if (n.nodeType === 3 && /\s[·•|–—](?=\s)/.test(n.nodeValue)) { keep(n, n.nodeValue); n.nodeValue = n.nodeValue.replace(/\s+([·•|–—])(?=\s)/g, ' $1'); } });
+      const room = el.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+      work.push([el, room, cs.textAlign === 'justify']);
     });
+    /* write, then measure once: the glued words must still fit their box (short labels in narrow columns on a phone) */
+    const glued = work.map(([el]) => glue(el));
+    const rg = document.createRange();
+    work.forEach(([el, room], k) => {
+      const ch = glued[k]; if (!ch.length || room <= 0) return;
+      const n = ch[0][0], v = n.nodeValue, at = v.replace(/\s+$/, '').lastIndexOf(' ');
+      rg.setStart(n, at + 1); rg.setEnd(n, v.length);
+      if (rg.getBoundingClientRect().width > room + 0.5) ch.forEach(([node, orig]) => { node.nodeValue = orig; touched.delete(node); });
+    });
+    work.forEach(([el, , isJust]) => {
+      if (el.querySelector('.w')) glueW(el);
+      if (isJust) just.push(el);
+      seen.set(el, el.textContent + '#' + el.getElementsByTagName('*').length);
+    });
+    just.forEach(el => { easeJustify(el); seen.set(el, el.textContent + '#' + el.getElementsByTagName('*').length); });
   };
   let t;
   const queue = () => { clearTimeout(t); t = setTimeout(run, 60); };
+  /* start again from the original words: used when the width or the fonts change */
+  const reflow = () => {
+    unease();
+    touched.forEach((v, n) => { if (n.isConnected) n.nodeValue = v; }); touched.clear();
+    document.querySelectorAll('.nb').forEach(unwrap);
+    document.querySelectorAll('[data-shrunk]').forEach(e => { e.style.fontSize = ''; delete e.dataset.shrunk; });
+    document.querySelectorAll('body *').forEach(e => seen.delete(e));
+    run();
+  };
   const start = () => {
     run();
     new MutationObserver(queue).observe(document.body, { childList: true, subtree: true, characterData: true });
     addEventListener('load', run);
-    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { document.querySelectorAll('.nb').forEach(unwrap); document.querySelectorAll('[data-shrunk]').forEach(e => { e.style.fontSize = ''; delete e.dataset.shrunk; }); document.querySelectorAll('body *').forEach(e => seen.delete(e)); run(); }, 250); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(run);
+    /* phones fire resize when the address bar hides: only a width change re-flows text */
+    let rt, lw = innerWidth;
+    addEventListener('resize', () => { if (innerWidth === lw) return; clearTimeout(rt); rt = setTimeout(() => { lw = innerWidth; reflow(); }, 250); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(reflow);
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(start, 0)); else setTimeout(start, 0);
 })();
