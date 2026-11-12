@@ -833,7 +833,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pad = parseFloat(getComputedStyle(el).paddingRight) || 0;
     const slack = frame.right - pad - before.right;
     el.style.textAlign = prev;
-    if (after.top - before.top < 4 || slack < frame.width * 0.1) return;
+    if (after.top - before.top < 4 || slack < frame.width * 0.4) return;
     const rest = last.splitText(at);
     rest.nodeValue = rest.nodeValue.slice(1);
     const br = document.createElement('br'); br.className = 'jbr';

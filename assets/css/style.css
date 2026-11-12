@@ -2080,3 +2080,16 @@ body[data-page="contact"] .phead { padding-bottom: clamp(40px,4.5vw,64px); }
 /* Values cards: on tablets and phones every card takes its proper width (cards 02 and 03 were squeezed) */
 @media (max-width: 900px) { .val2 li, .val2 li + li, .val2 li:nth-child(n+4) { grid-column: span 3; } .val2 li:last-child { grid-column: span 6; } }
 @media (max-width: 560px) { .val2 li, .val2 li + li, .val2 li:nth-child(n+4), .val2 li:last-child { grid-column: span 6; } }
+
+/* ===== v41b · review fixes, 12/11/26 ===== */
+/* closing statement: centred and balanced (the justify rule had pulled it left) */
+.sec .close-c p, .sec .close-c p.lead { text-align: center; text-wrap: balance; max-width: 34em; margin-inline: auto; }
+.sec .close-c p:not(.lead) { max-width: 46em !important; }
+/* vision line sits on the same left edge as the pillars sentence above it */
+@media (min-width: 801px) {
+  .why-vision { display: grid; grid-template-columns: 2fr 10fr; gap: clamp(16px, 3vw, 48px); align-items: center; }
+  .why-vision p { max-width: none; flex: none; }
+}
+/* Our people heading: "Local Talent." / "Global Competence." on two lines */
+.people-grid .h2 { font-size: clamp(30px, 3.9vw, 62px); text-wrap: nowrap; }
+@media (max-width: 420px) { .people-grid .h2 { font-size: 9.2vw; } }
