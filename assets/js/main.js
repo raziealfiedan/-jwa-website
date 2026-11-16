@@ -66,6 +66,7 @@ const ICON = {
   paint: S('<rect x="4" y="3.5" width="14" height="6" rx="1"/><path d="M18 6.5h2v5.5h-8v3M10.5 15h3v6h-3z"/>')
 };
 const LOGO = 'assets/img/jwa-logo.png';
+const MARK = 'assets/img/jwa-mark.png';
 const PROFILE = 'assets/JWA-Company-Profile.pdf';
 
 /* Menu follows Datuk James's copy document (Oct 2026) */
@@ -101,7 +102,7 @@ function renderHeader() {
   if (!host) return;
   const page = document.body.dataset.page;
   const link = ([href, label]) => `<a href="${href}"${href.replace('.html', '') === page ? ' aria-current="page"' : ''}>${label}</a>`;
-  const brand = `<a class="brand" href="index.html" aria-label="JWA Design & Build, home"><img src="${LOGO}" alt="JWA Design & Build Sdn Bhd" width="623" height="377"></a>`;
+  const brand = `<a class="brand" href="index.html" aria-label="JWA Design & Build, home"><img class="brand-mark" src="${MARK}" alt="JWA" width="623" height="246"><span class="brand-text"><b>Design &amp; Build</b><small>Sdn Bhd</small></span></a>`;
   const prof = `<a class="nav-profile" href="${PROFILE}" download="JWA-Design-and-Build-Company-Profile.pdf">Company Profile (PDF)</a>`;
   let left = '', nav;
   if (HDR === 'split') {
