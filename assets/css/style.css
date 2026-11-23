@@ -2394,3 +2394,27 @@ body > .progress { position: fixed; top: 0; left: 0; right: 0; bottom: auto; hei
 }
 .g-hint { display: none; }
 @media (max-width: 900px) { .g-hint { display: block; font-size: 13px; color: var(--mute); margin: -10px 0 0; } }
+
+/* v46 · The JWA Way, now inside Capabilities 02 */
+.hw-head { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 90px); align-items: end; margin: clamp(56px, 6vw, 96px) 0 clamp(26px, 3vw, 40px); padding-top: clamp(36px, 4vw, 56px); border-top: 1px solid rgba(22,22,22,.12); scroll-margin-top: 120px; }
+.hw-kick { display: block; font-size: 12.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
+.hw-title { font-family: var(--f-head); font-weight: 700; font-size: clamp(28px, 3vw, 44px); line-height: 1.05; letter-spacing: -.025em; margin: 0; color: var(--ink); }
+.sec .hw-head p { margin: 0; max-width: 36em; text-align: start; }
+.hw-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.4vw, 20px); }
+.hw { background: #fff; border-radius: 4px 4px 26px 4px; overflow: hidden; box-shadow: 0 0 0 1px rgba(22,22,22,.06), 0 20px 40px -32px rgba(10,10,20,.35); display: grid; grid-template-rows: auto 1fr; }
+.hw .ph { aspect-ratio: 4 / 3; border-radius: 0; }
+.hw .ph img { transition: transform 1s var(--ease); }
+.hw:hover .ph img { transform: scale(1.04); }
+.hw-txt { padding: 20px 20px 24px; display: grid; gap: 8px; align-content: start; }
+.hw-no { font-size: 12px; font-weight: 700; color: var(--red); letter-spacing: .1em; }
+.hw-txt h3 { font-family: var(--f-head); font-size: 19px; line-height: 1.2; margin: 0; color: var(--ink); }
+.hw-tag { margin: 0; font-size: 14.5px; font-weight: 600; color: var(--body); }
+.sec .hw-txt p:last-child { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--mute); text-align: start; }
+@media (max-width: 1000px) { .hw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hw-head { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .hw-grid { grid-template-columns: 1fr; } }
+.hw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.hw { grid-template-rows: none; grid-template-columns: 42% 1fr; }
+.hw .ph { aspect-ratio: auto; height: 100%; min-height: 230px; }
+.hw-txt { padding: 24px 24px 26px; align-content: center; }
+@media (max-width: 1000px) { .hw-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .hw { grid-template-columns: 1fr; } .hw .ph { min-height: 0; aspect-ratio: 16 / 9; } }

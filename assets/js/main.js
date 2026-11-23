@@ -74,7 +74,6 @@ const NAV = [
   ['about.html', 'About JWA'],
   ['services.html', 'Our Capabilities'],
   ['projects.html', 'Projects'],
-  ['jwa-way.html', 'The JWA Way'],
   ['careers.html', 'Careers'],
   ['newsletter.html', 'News'],
   ['contact.html', 'Contact']
