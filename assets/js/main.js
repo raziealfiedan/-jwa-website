@@ -334,6 +334,8 @@ function initHeaderScroll() {
   const h = document.querySelector('.header');
   if (!h) return;
   const bar = h.querySelector('.progress');
+  /* fixed to the window edge: lifted out of the glass bar, whose blur would otherwise hold it */
+  if (bar) document.body.appendChild(bar);
   const darks = [...document.querySelectorAll('.sec--dark, .footer')];
   let ticking = false;
   const update = () => {
@@ -526,10 +528,12 @@ function initEcosystem() {
     nodes.forEach(n => {
       n.addEventListener('mouseenter', () => set(n.dataset.k));
       n.addEventListener('focus', () => set(n.dataset.k));
-      n.addEventListener('click', e => { if (n.tagName === 'BUTTON') { e.preventDefault(); set(n.dataset.k); } });
+      n.addEventListener('click', e => { e.preventDefault(); set(n.dataset.k); });
     });
-    eco.querySelector('.eco-ring')?.addEventListener('mouseleave', () => set(null));
-    set(null);
+    /* the last service chosen stays on show; a link such as services.html#architecture opens that one */
+    const fromHash = () => { const k = location.hash.slice(1); if (nodes.some(n => n.dataset.k === k)) { set(k); eco.closest('section')?.scrollIntoView({ block: 'start' }); return true; } return false; };
+    if (!fromHash()) set(nodes[0]?.dataset.k || null);
+    addEventListener('hashchange', fromHash);
   });
 }
 
@@ -896,4 +900,64 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(reflow);
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(start, 0)); else setTimeout(start, 0);
+})();
+
+/* v45 · certificate coverflow and an in-page lightbox (nothing opens in a new tab) */
+(() => {
+  const lb = (() => {
+    let box, img, cap, list = [], at = 0;
+    const show = i => { at = (i + list.length) % list.length; const it = list[at]; img.src = it.src; img.alt = it.cap; cap.textContent = it.cap; box.querySelector('.lb-n').textContent = list.length > 1 ? `${at + 1} / ${list.length}` : ''; };
+    const close = () => { box.classList.remove('on'); document.documentElement.classList.remove('lb-lock'); setTimeout(() => { if (!box.classList.contains('on')) img.removeAttribute('src'); }, 300); };
+    const build = () => {
+      box = document.createElement('div'); box.className = 'lb'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'Image viewer');
+      box.innerHTML = '<button type="button" class="lb-x" aria-label="Close">&times;</button><button type="button" class="lb-nav lb-prev" aria-label="Previous"><span data-icon="arrow"></span></button><figure class="lb-fig"><img alt=""><figcaption><span class="lb-cap"></span><span class="lb-n"></span></figcaption></figure><button type="button" class="lb-nav lb-next" aria-label="Next"><span data-icon="arrow"></span></button>';
+      document.body.appendChild(box);
+      img = box.querySelector('img'); cap = box.querySelector('.lb-cap');
+      box.querySelector('.lb-x').onclick = close;
+      box.querySelector('.lb-prev').onclick = () => show(at - 1);
+      box.querySelector('.lb-next').onclick = () => show(at + 1);
+      box.addEventListener('click', e => { if (e.target === box || e.target.classList.contains('lb-fig')) close(); });
+      addEventListener('keydown', e => { if (!box.classList.contains('on')) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') show(at - 1); if (e.key === 'ArrowRight') show(at + 1); });
+      if (typeof ICON !== 'undefined' && ICON.arrow) box.querySelectorAll('[data-icon="arrow"]').forEach(s => { s.innerHTML = ICON.arrow; });
+    };
+    return (items, i) => { if (!box) build(); list = items; box.classList.toggle('lb--one', items.length < 2); show(i); box.classList.add('on'); document.documentElement.classList.add('lb-lock'); box.querySelector('.lb-x').focus({ preventScroll: true }); };
+  })();
+
+  const init = () => {
+    /* grouped links: <a data-lb="group" data-cap="…" href="image"> */
+    const groups = {};
+    document.querySelectorAll('a[data-lb]').forEach(a => (groups[a.dataset.lb] ||= []).push(a));
+    Object.values(groups).forEach(as => as.forEach((a, i) => a.addEventListener('click', e => {
+      e.preventDefault(); lb(as.map(x => ({ src: x.getAttribute('href'), cap: x.dataset.cap || '' })), i);
+    })));
+
+    document.querySelectorAll('[data-cf]').forEach(cf => {
+      const cards = [...cf.querySelectorAll('.cf-card')], bar = cf.querySelector('.cf-bar i');
+      const items = cards.map(c => ({ src: c.dataset.full, cap: c.dataset.cap }));
+      let cur = Math.min(1, cards.length - 1);
+      const place = () => {
+        const w = cf.clientWidth, step = Math.min(w * 0.24, 250);
+        cards.forEach((c, i) => {
+          const o = i - cur, a = Math.abs(o);
+          c.style.transform = `translate(-50%,-50%) translateX(${o * step}px) translateZ(${-a * 140}px) rotateY(${o === 0 ? 0 : (o < 0 ? 28 : -28)}deg) scale(${o === 0 ? 1 : 0.86})`;
+          c.style.zIndex = 50 - a; c.style.opacity = a > 2 ? 0 : (a === 0 ? 1 : a === 1 ? .62 : .3);
+          c.style.pointerEvents = a > 2 ? 'none' : '';
+          c.classList.toggle('on', o === 0); c.tabIndex = a > 2 ? -1 : 0;
+        });
+        if (bar) { bar.style.width = (100 / cards.length) + '%'; bar.style.left = (cur * 100 / cards.length) + '%'; }
+      };
+      const go = i => { cur = Math.max(0, Math.min(cards.length - 1, i)); place(); };
+      cards.forEach((c, i) => c.addEventListener('click', () => { if (moved) return; if (i === cur) lb(items, i); else go(i); }));
+      cf.querySelectorAll('.cf-btn').forEach(b => b.addEventListener('click', () => go(cur + +b.dataset.dir)));
+      cf.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') go(cur - 1); if (e.key === 'ArrowRight') go(cur + 1); });
+      /* swipe */
+      let x0 = null, moved = false;
+      const stage = cf.querySelector('.cf-stage');
+      stage.addEventListener('pointerdown', e => { x0 = e.clientX; moved = false; });
+      stage.addEventListener('pointermove', e => { if (x0 !== null && Math.abs(e.clientX - x0) > 12) moved = true; });
+      stage.addEventListener('pointerup', e => { if (x0 === null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1)); setTimeout(() => { moved = false; }, 0); });
+      addEventListener('resize', place); place();
+    });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
