@@ -2493,3 +2493,7 @@ body > .progress { position: fixed; top: 0; left: 0; right: 0; bottom: auto; hei
 .team-cap { margin-top: 14px; font-size: 13.5px; line-height: 1.6; color: var(--mute); max-width: 72em; }
 .team-cap b { color: var(--ink); font-weight: 600; }
 .vm2-card p + p { margin-top: 12px; }
+
+/* v57 – careers "From Sabah to the World": left-aligned text, no stretched word gaps */
+.cw-fut-t p{text-align:left!important;text-wrap:pretty}
+.cw-future .ph img{object-position:50% 30%}
