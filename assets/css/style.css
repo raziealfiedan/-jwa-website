@@ -2466,3 +2466,12 @@ body > .progress { position: fixed; top: 0; left: 0; right: 0; bottom: auto; hei
   .group--v41 li:first-child { grid-column: 1 / -1; }
   .group--v41 li:first-child .tile { height: 120px; }
 }
+
+/* v53: "under one roof" strip, four reasons: four across on desktop, a tidy 2 x 2 on phones */
+#steps .steps-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 760px) {
+  #steps .usp { font-size: 22px; line-height: 1.3; margin-bottom: 18px; }
+  #steps .steps-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; border-top: 0; }
+  #steps .steps-nav a, #steps .steps-nav a + a, #steps .steps-nav a:nth-child(even) { padding: 14px 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--white); gap: 6px; align-content: start; }
+  #steps .steps-nav span { font-size: 16.5px; line-height: 1.25; }
+}
