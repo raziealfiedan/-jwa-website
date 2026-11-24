@@ -2475,3 +2475,15 @@ body > .progress { position: fixed; top: 0; left: 0; right: 0; bottom: auto; hei
   #steps .steps-nav a, #steps .steps-nav a + a, #steps .steps-nav a:nth-child(even) { padding: 14px 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--white); gap: 6px; align-content: start; }
   #steps .steps-nav span { font-size: 16.5px; line-height: 1.25; }
 }
+
+/* v54: certificate carousel on phones: more air, side cards peek out, label clear of the card */
+@media (max-width: 640px) {
+  #certifications .cs-head { margin-bottom: 18px; }
+  .cf { margin-top: 18px; }
+  .cf-stage { height: 410px; }
+  .cf-card { width: 54vw; }
+  .cf-card img { padding: 12px 12px 58px; }
+  .cf-cap b { font-size: 16px; }
+  .cf-ctl { margin-top: 22px; gap: 14px; }
+  .cf-hint { margin-top: 16px; }
+}

@@ -935,11 +935,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const items = cards.map(c => ({ src: c.dataset.full, cap: c.dataset.cap }));
       let cur = Math.min(1, cards.length - 1);
       const place = () => {
-        const w = cf.clientWidth, step = Math.min(w * 0.24, 250);
+        const w = cf.clientWidth, small = w < 640, step = small ? w * 0.44 : Math.min(w * 0.24, 250);
         cards.forEach((c, i) => {
           const o = i - cur, a = Math.abs(o);
-          c.style.transform = `translate(-50%,-50%) translateX(${o * step}px) translateZ(${-a * 140}px) rotateY(${o === 0 ? 0 : (o < 0 ? 28 : -28)}deg) scale(${o === 0 ? 1 : 0.86})`;
-          c.style.zIndex = 50 - a; c.style.opacity = a > 2 ? 0 : (a === 0 ? 1 : a === 1 ? .62 : .3);
+          c.style.transform = `translate(-50%,-50%) translateX(${o * step}px) translateZ(${-a * 140}px) rotateY(${o === 0 ? 0 : (o < 0 ? 28 : -28)}deg) scale(${o === 0 ? 1 : (small ? 0.8 : 0.86)})`;
+          c.style.zIndex = 50 - a; c.style.opacity = a > (small ? 1 : 2) ? 0 : (a === 0 ? 1 : a === 1 ? .62 : .3);
           c.style.pointerEvents = a > 2 ? 'none' : '';
           c.classList.toggle('on', o === 0); c.tabIndex = a > 2 ? -1 : 0;
         });
