@@ -4,7 +4,8 @@
    government flagships first. Values are rounded to the nearest
    million (JWA review, Oct 2026). `client` or `year` left as null shows
    a TBC tag on the card until JWA confirms it.
-   Images are served from the staging site's storage for now.
+   Images under assets/ are stored on this site; the rest still load
+   from the staging site's storage until local copies are supplied.
 ------------------------------------------------------------------- */
 const BLOB = 'https://ljlmhlwco3ezbrys.public.blob.vercel-storage.com/projects/';
 
@@ -23,7 +24,7 @@ const PROJECTS = [
   // ---- Flagships and ongoing work (company profile, Sept 2026)
   { slug: 'sesb-kwsp-hq', story: 'A new home for Sabah’s power utility: a headquarters that turns a working building into a place people are proud to arrive at every morning.', name: 'Sabah Electricity Headquarters', sector: 'corporate', flagship: true,
     client: 'Sabah Electricity Sdn Bhd', location: 'Kota Kinabalu', year: '2025', value: 'RM42 million', scope: 'Design & build office fit-out',
-    images: ['offices/sesb-kwsp-hq/edited-photo-12.jpg', 'offices/sesb-kwsp-hq/edited-photo-1.jpg', 'offices/sesb-kwsp-hq/edited-photo-11.jpg', 'offices/sesb-kwsp-hq/edited-photo-10.jpg'] },
+    images: ['assets/img/work/sesb-hq/07.jpg', 'assets/img/work/sesb-hq/11.jpg', 'assets/img/work/sesb-hq/06.jpg', 'assets/img/work/sesb-hq/17.jpg', 'assets/img/work/sesb-hq/02.jpg', 'assets/img/work/sesb-hq/22.jpg', 'assets/img/work/sesb-hq/12.jpg', 'assets/img/work/sesb-hq/10.jpg', 'assets/img/work/sesb-hq/15.jpg', 'assets/img/work/sesb-hq/24.jpg', 'assets/img/work/sesb-hq/01.jpg', 'assets/img/work/sesb-hq/09.jpg', 'assets/img/work/sesb-hq/14.jpg', 'assets/img/work/sesb-hq/26.jpg', 'assets/img/work/sesb-hq/25.jpg', 'assets/img/work/sesb-hq/28.jpg', 'assets/img/work/sesb-phase2/03.jpg', 'assets/img/work/sesb-phase2/01.jpg', 'assets/img/work/sesb-phase2/02.jpg', 'assets/img/work/sesb-phase2/05.jpg', 'assets/img/work/sesb-phase2/06.jpg', 'assets/img/work/sesb-phase1/03.jpg', 'assets/img/work/sesb-phase1/06.jpg', 'assets/img/work/sesb-phase1/01.jpg'] },
   { slug: 'inanam-taipan-ibis', story: 'A hotel that lights up Inanam at dusk, designed and built from the ground up by JWA.', name: 'ibis Styles Kota Kinabalu Inanam', sector: 'hotels',
     client: null, location: 'Inanam, Kota Kinabalu', year: '2018', value: 'RM3 million', scope: 'Hotel design & build',
     images: ['hospitality/inanam-taipan-ibis/20180307_184343-V3ZI65pubrkH5TDNLEs8HjcsRpoqee.jpg', 'hospitality/inanam-taipan-ibis/20180307_184459-p9yE8BVfGsc1LzdMdn8XSNnaK9hJW9.jpg', 'hospitality/inanam-taipan-ibis/IMG_3320-PQd53PocOGSYUaKdlagcKOLSyZLhyY.jpg', 'hospitality/inanam-taipan-ibis/IMG_3333-tSmQPQKkDGIMOQTuDxogh2mrJSWMCG.jpg'] },
@@ -35,19 +36,19 @@ const PROJECTS = [
     images: ['assets/img/projects/conocophillips-1.jpg', 'assets/img/projects/conocophillips-2.jpg', 'assets/img/projects/conocophillips-3.jpg'] },
   { slug: 'qhazanah-sabah-ppns', story: 'A corporate office for the state’s investment arm, calm, precise and made to last.', name: 'Qhazanah Sabah PPNS', sector: 'corporate', flagship: true,
     client: 'Qhazanah Sabah Berhad', location: 'Kota Kinabalu', year: '2023', value: 'RM6.95 million', scope: 'Corporate office fit-out',
-    images: ['offices/qhazanah-sabah-ppns/20231108_114427-LGV6arNsWU37a5Wmc5g0ZBa2F9clj0.jpg', 'offices/qhazanah-sabah-ppns/20231108_114512-8LufrQjAmrfHgGoJ8vHaNfPCrSlDCx.jpg', 'offices/qhazanah-sabah-ppns/20231108_114608-aLtNlMUIXJbgvaSr2aezq7KyfYoW2D.jpg', 'offices/qhazanah-sabah-ppns/20231108_115927-IzgwyjKGrRq01BGLHO3B6DESfEfsUZ.jpg'] },
+    images: ['assets/img/work/qhazanah/19.jpg', 'assets/img/work/qhazanah/08.jpg', 'assets/img/work/qhazanah/13.jpg', 'assets/img/work/qhazanah/11.jpg', 'assets/img/work/qhazanah/01.jpg', 'assets/img/work/qhazanah/05.jpg', 'assets/img/work/qhazanah/07.jpg', 'assets/img/work/qhazanah/03.jpg', 'assets/img/work/qhazanah/14.jpg', 'assets/img/work/qhazanah/21.jpg', 'assets/img/work/qhazanah/10.jpg', 'assets/img/work/qhazanah/04.jpg', 'assets/img/work/qhazanah/12.jpg', 'assets/img/work/qhazanah/26.jpg', 'assets/img/work/qhazanah/15.jpg', 'assets/img/work/qhazanah/09.jpg'] },
   { slug: 'kundasang-golf-villa', story: 'Villas in the cool highlands below Mount Kinabalu, shaped around the mountain view.', name: 'Kundasang Golf Villa', sector: 'hotels', label: 'Resort',
     client: null, location: 'Kundasang', year: '2016', value: null, scope: 'Resort villa design & build',
     images: ['assets/img/projects/kundasang-golf-villa-1.jpg', 'assets/img/projects/kundasang-golf-villa-2.jpg', 'assets/img/projects/kundasang-golf-villa-3.jpg', 'assets/img/projects/kundasang-golf-villa-4.jpg'] },
   { slug: 'suria-capital-jq', story: 'A workplace for Suria Capital at JQ Central, where every detail was considered from first plan to final touch.', name: 'Suria Capital JQ Central', sector: 'corporate', flagship: true,
     client: 'Suria Capital Holdings Berhad', location: 'Kota Kinabalu', year: '2023', value: 'RM4 million', scope: 'Corporate office fit-out',
-    images: ['offices/suria-capital-jq/C_109605-78XBHdlEmNkfJrjaZLHX9hpYsHhAMT.jpg', 'offices/suria-capital-jq/C_106066-5b9e7dc8PDHqBZ77rsHR4EJqoxvNF7.jpg', 'offices/suria-capital-jq/C_109638-L5fPmsgI7kfNLUVsshGvQ5HVBPrAS6.jpg'] },
+    images: ['assets/img/work/suria/01.jpg', 'assets/img/work/suria/02.jpg', 'assets/img/work/suria/12.jpg', 'assets/img/work/suria/05.jpg', 'assets/img/work/suria/06.jpg', 'assets/img/work/suria/11.jpg', 'assets/img/work/suria/16.jpg', 'assets/img/work/suria/13.jpg', 'assets/img/work/suria/08.jpg', 'assets/img/work/suria/04.jpg', 'assets/img/work/suria/09.jpg', 'assets/img/work/suria/03.jpg', 'assets/img/work/suria/14.jpg', 'assets/img/work/suria/17.jpg', 'assets/img/work/suria/10.jpg', 'assets/img/work/suria/07.jpg'] },
   { slug: 'putatan-proton', name: 'Proton Putatan 3S', sector: 'commercial', label: 'Showroom',
     client: 'Proton', location: 'Putatan', year: '2019', value: 'RM5 million', scope: '3S centre design & build',
     images: ['assets/img/projects/proton-putatan-1.jpg', 'assets/img/projects/proton-putatan-2.jpg', 'commercial/putatan-proton/IMG_7548-Fq38XaMROtWL1GPCOWKdI2bHlifnhy.jpg', 'commercial/putatan-proton/IMG_7573-JAerOoESDtjjAlfnADeD9H9muuBuyl.jpg', 'commercial/putatan-proton/IMG_7591-YHw3p4uadGzc3HvXjRImMv9gJDUX4J.jpg'] },
   { slug: 'sesb-keningau', name: 'SESB Keningau', sector: 'corporate',
     client: 'Sabah Electricity Sdn Bhd', location: 'Keningau', year: null, value: null, scope: 'Regional office fit-out',
-    images: ['offices/sesb-keningau/1-cdpMRfKrEJF1Tkfq3FpkkBbyk5lM7x.jpg', 'offices/sesb-keningau/12-3kI0i71NrBL5W5R0LFwNy694dxjumK.jpg', 'offices/sesb-keningau/15-mdh8ZlaRqxqklK4rm0F0FdowIbM1xZ.jpg'] },
+    images: ['assets/img/work/sesb-keningau/01.jpg', 'assets/img/work/sesb-keningau/02.jpg', 'assets/img/work/sesb-keningau/03.jpg', 'assets/img/work/sesb-keningau/04.jpg', 'assets/img/work/sesb-keningau/05.jpg', 'assets/img/work/sesb-keningau/06.jpg', 'assets/img/work/sesb-keningau/07.jpg', 'assets/img/work/sesb-keningau/08.jpg', 'assets/img/work/sesb-keningau/09.jpg', 'assets/img/work/sesb-keningau/10.jpg', 'assets/img/work/sesb-keningau/11.jpg', 'assets/img/work/sesb-keningau/12.jpg', 'assets/img/work/sesb-keningau/13.jpg', 'assets/img/work/sesb-keningau/14.jpg'] },
 
   // ---- Government
   { slug: 'jkr-sk-kuala-namadan', name: 'JKR SK Kuala Namadan', sector: 'government',
@@ -68,10 +69,10 @@ const PROJECTS = [
     images: ['offices/vts-group-sutera/VTS%201.1-bEGj4eIdoW5E4yvXGNFcYDbvtn3Q2Y.jpg', 'offices/vts-group-sutera/VTS%201.2-seuF8lo89zEzO0JWIjWzPMOJW1aKG6.jpg', 'offices/vts-group-sutera/VTS%201.3-6GaACy27JLwacWr6obazFsgv8Hp9zI.jpg'] },
   { slug: 'jsk-group-far-east', name: 'JSK Group Far East', sector: 'corporate',
     client: 'JSK Group', location: 'Kota Kinabalu', year: '2022', value: 'RM1 million', scope: 'Corporate office fit-out',
-    images: ['offices/jsk-group-far-east/_OSR0021-HDR-v2-7rMoPJqm15q7hiKsEWOicia5ob9Czq.jpg', 'offices/jsk-group-far-east/_OSR0026-HDR-P8eHGZsXBIxrJyynv1VPLTFmG2qorn.jpg', 'offices/jsk-group-far-east/_OSR0035-HDR-9CfUQg2q9u8ZFOk4J0PEoW9CDqxLoR.jpg'] },
+    images: ['assets/img/work/jsk/03.jpg', 'assets/img/work/jsk/02.jpg', 'assets/img/work/jsk/01.jpg', 'assets/img/work/jsk/04.jpg', 'assets/img/work/jsk/05.jpg', 'assets/img/work/jsk/06.jpg', 'assets/img/work/jsk/07.jpg', 'assets/img/work/jsk/08.jpg'] },
   { slug: 'urban-space-co-working', name: 'VTS Coworking Space', sector: 'corporate',
     client: 'VTS Group', location: 'Kota Kinabalu', year: '2021', value: 'RM1 million', scope: 'Coworking space fit-out',
-    images: ['offices/urban-space-co-working/US%20Final%2004-qHHguTYInUUTQcKewF2Y5jX0DQuiE1.jpg', 'offices/urban-space-co-working/US%20Final%2001-xXPixwBCWQtOZE3mWC8huhrV6OESLX.jpg', 'offices/urban-space-co-working/US%20Final%2003-VwDYcK6ZYZiUBPdJzxmVjl4k3tN0dS.jpg'] },
+    images: ['assets/img/work/urban-space/01.jpg', 'assets/img/work/urban-space/02.jpg', 'assets/img/work/urban-space/03.jpg', 'assets/img/work/urban-space/04.jpg', 'assets/img/work/urban-space/05.jpg', 'assets/img/work/urban-space/09.jpg', 'assets/img/work/urban-space/06.jpg', 'assets/img/work/urban-space/07.jpg', 'assets/img/work/urban-space/08.jpg'] },
   { slug: 'forest-solution-riverson', name: 'Forest Solution Riverson', sector: 'corporate',
     client: 'Forest Solutions', location: 'Kota Kinabalu', year: null, value: null, scope: 'Corporate office fit-out',
     images: ['offices/forest-solution-riverson/1-jr9KSycMSuhvQt6TFJoftiBE0UWbIj.jpg', 'offices/forest-solution-riverson/10-JnbqgjYUSn7OulB6Ukdw2rYMD6tLk3.jpg', 'offices/forest-solution-riverson/2-vj7LrtrlUlo941tZctf0VAeB99k6cd.jpg'] },
