@@ -2424,3 +2424,45 @@ body > .progress { position: fixed; top: 0; left: 0; right: 0; bottom: auto; hei
 .article-fig a { display: block; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: var(--white); cursor: zoom-in; }
 .article-fig img { width: 100%; height: auto; display: block; }
 .article-fig figcaption { font-size: 14px; color: var(--mute); line-height: 1.55; }
+
+/* ============ v49: mobile polish ============ */
+/* 1. Menu: a compact card under the header, not a full screen; links always dark, current page red */
+@media (max-width: 1120px) {
+  .menu-open .nav { inset: calc(var(--header-h) + 16px) 8px auto 8px; max-height: calc(100svh - var(--header-h) - 32px); padding: 6px 20px 18px; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 18px 50px rgba(10,10,14,.22); }
+  .menu-open .header .nav a, .menu-open .header.on-dark .nav a { font-size: 18px; letter-spacing: -0.01em; color: var(--ink); padding: 12px 0; }
+  .menu-open .header .nav a:last-of-type:not(.nav-profile) { border-bottom: 0; }
+  .menu-open .header .nav a[aria-current="page"], .menu-open .header.on-dark .nav a[aria-current="page"] { color: var(--red); }
+  .menu-open .header .nav a:hover, .menu-open .header.on-dark .nav a:hover { color: var(--red); }
+  .menu-open .header .nav .nav-profile, .menu-open .header.on-dark .nav .nav-profile { margin-top: 10px; padding: 11px 16px; font-size: 15px; text-align: center; color: var(--ink); background: none; border: 1px solid var(--ink); border-radius: 10px; }
+  body.menu-open::after { content: ''; position: fixed; inset: 0; z-index: 55; background: rgba(10,10,14,.38); pointer-events: none; }
+}
+@media (min-width: 601px) and (max-width: 1120px) { .menu-open .nav { left: auto; width: 360px; right: 24px; } }
+
+/* 2. Footer: Explore and Visit us side by side on phones */
+@media (max-width: 760px) {
+  .footer .footer-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 26px 14px; }
+  .footer .footer-about { grid-column: 1 / -1; max-width: none; gap: 14px; }
+  .footer-grid h4 { margin-bottom: 10px; }
+  .footer .footer-grid ul { gap: 2px; }
+  .footer .footer-grid > div > ul:not(.footer-contact) a { display: block; padding: 5px 0; font-size: 14.5px; }
+  .footer-contact { gap: 12px; font-size: 13px; line-height: 1.45; }
+  .footer-contact li { grid-template-columns: 15px 1fr; gap: 8px; }
+  .footer-contact svg, .footer-contact [data-icon] { width: 14px; height: 14px; margin-top: 3px; }
+  .footer-contact li:first-child br { display: none; }
+  .footer-contact li:nth-child(3) a { overflow-wrap: anywhere; }
+  .footer-cta { gap: 14px; }
+  .footer-cta-b { display: flex; flex-wrap: wrap; gap: 10px; }
+  .footer-cta-b .btn { padding: 12px 18px; font-size: 14.5px; white-space: nowrap; }
+}
+
+/* 3. Workplace gallery: seven photos, so the grid closes evenly in two columns */
+.wk .g { grid-column: span 4; }
+@media (max-width: 760px) { .wk .g { grid-column: span 1 !important; } }
+@media (min-width: 761px) { .wk .d, .wk .e, .wk .f { grid-column: span 3; } .wk .g { grid-column: span 3; } }
+
+/* 4. JWA Group on phones: JWA centred on top, the rest two by two */
+@media (max-width: 560px) {
+  .group--v41 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 12px; }
+  .group--v41 li:first-child { grid-column: 1 / -1; }
+  .group--v41 li:first-child .tile { height: 120px; }
+}

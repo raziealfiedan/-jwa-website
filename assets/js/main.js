@@ -164,9 +164,9 @@ function renderFooter() {
           <div>
             <h4>Visit us</h4>
             <ul class="footer-contact">
-              <li>${ICON.pin}<span>Lot No. 1, 2nd Floor, YLY Plaza,<br>Jalan Tuaran Bypass, Inanam,<br>88450 Kota Kinabalu, Sabah</span></li>
+              <li>${ICON.pin}<span>Lot No. 1, 2nd Floor, YLY Plaza, <br>Jalan Tuaran Bypass, Inanam, <br>88450 Kota Kinabalu, Sabah</span></li>
               <li>${ICON.phone}<span><a href="tel:+6088335618">+6088 335 618</a><br><a href="tel:+60128802432">+6012 880 2432</a></span></li>
-              <li>${ICON.mail}<a href="mailto:inquiries@jwadesignbuild.com">inquiries@jwadesignbuild.com</a></li>
+              <li>${ICON.mail}<a href="mailto:inquiries@jwadesignbuild.com">inquiries@<wbr>jwadesignbuild.com</a></li>
               <li>${ICON.clock}<span>Monday to Friday, 8am to 5pm</span></li>
             </ul>
           </div>
