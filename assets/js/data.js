@@ -34,7 +34,7 @@ const PROJECTS = [
     client: 'ConocoPhillips', location: 'Sabah', year: '2026', value: 'RM23 million', scope: 'Office fit-out (design by SLG)',
     images: ['assets/img/projects/conocophillips-1.jpg', 'assets/img/projects/conocophillips-2.jpg', 'assets/img/projects/conocophillips-3.jpg'] },
   { slug: 'qhazanah-sabah-ppns', story: 'A corporate office for the state’s investment arm, calm, precise and made to last.', name: 'Qhazanah Sabah PPNS', sector: 'corporate', flagship: true,
-    client: 'Qhazanah Sabah Berhad', location: 'Kota Kinabalu', year: '2023', value: 'RM6 million', scope: 'Corporate office fit-out',
+    client: 'Qhazanah Sabah Berhad', location: 'Kota Kinabalu', year: '2023', value: 'RM6.95 million', scope: 'Corporate office fit-out',
     images: ['offices/qhazanah-sabah-ppns/20231108_114427-LGV6arNsWU37a5Wmc5g0ZBa2F9clj0.jpg', 'offices/qhazanah-sabah-ppns/20231108_114512-8LufrQjAmrfHgGoJ8vHaNfPCrSlDCx.jpg', 'offices/qhazanah-sabah-ppns/20231108_114608-aLtNlMUIXJbgvaSr2aezq7KyfYoW2D.jpg', 'offices/qhazanah-sabah-ppns/20231108_115927-IzgwyjKGrRq01BGLHO3B6DESfEfsUZ.jpg'] },
   { slug: 'kundasang-golf-villa', story: 'Villas in the cool highlands below Mount Kinabalu, shaped around the mountain view.', name: 'Kundasang Golf Villa', sector: 'hotels', label: 'Resort',
     client: null, location: 'Kundasang', year: '2016', value: null, scope: 'Resort villa design & build',
