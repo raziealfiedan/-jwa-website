@@ -2418,3 +2418,9 @@ body > .progress { position: fixed; top: 0; left: 0; right: 0; bottom: auto; hei
 .hw-txt { padding: 24px 24px 26px; align-content: center; }
 @media (max-width: 1000px) { .hw-grid { grid-template-columns: 1fr; } }
 @media (max-width: 520px) { .hw { grid-template-columns: 1fr; } .hw .ph { min-height: 0; aspect-ratio: 16 / 9; } }
+
+/* v47: figures inside news articles */
+.article-fig { margin: 8px 0; display: grid; gap: 12px; }
+.article-fig a { display: block; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: var(--white); cursor: zoom-in; }
+.article-fig img { width: 100%; height: auto; display: block; }
+.article-fig figcaption { font-size: 14px; color: var(--mute); line-height: 1.55; }
