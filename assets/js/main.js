@@ -603,6 +603,7 @@ function initProjects() {
       </a>`;
   const draw = () => {
     const list = PROJECTS.filter(p => current === 'all' || p.sector === current);
+    if (list.length - shown > 0 && list.length - shown <= 3) shown = list.length; /* never a button for just 1-3 more */
     grid.innerHTML = list.slice(0, shown).map(card).join('');
     if (blurb) { const t = BLURB[current] || BLURB.all; blurb.innerHTML = `<b>${t[0]}</b><span>${t[1]}</span>`; }
     if (more) { const left = list.length - shown; more.hidden = left <= 0; more.querySelector('span').textContent = `Show more projects (${Math.max(left, 0)} more)`; }

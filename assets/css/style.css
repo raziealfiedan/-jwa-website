@@ -2497,3 +2497,7 @@ body > .progress { position: fixed; top: 0; left: 0; right: 0; bottom: auto; hei
 /* v57 – careers "From Sabah to the World": left-aligned text, no stretched word gaps */
 .cw-fut-t p{text-align:left!important;text-wrap:pretty}
 .cw-future .ph img{object-position:50% 30%}
+
+/* v61 – projects closing heading: three clean left-aligned lines */
+#h-close .ln{display:block;text-indent:0}
+@media(max-width:760px){#h-close .ln{display:inline}}
